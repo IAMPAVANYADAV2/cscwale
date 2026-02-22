@@ -34,7 +34,8 @@ export default function Home() {
         <h2 className="text-2xl font-bold mb-4">About CSCWale</h2>
         <p>
           CSCWale ek digital initiative hai jo Bhadohi se shuru hua,
-          jiska aim hai har aadmi tak fast aur trusted online services pahunchana.
+          jiska aim hai har aadmi tak fast aur trusted online services pahunchana
+		Contact: 9452657508
         </p>
       </section>
 
