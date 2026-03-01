@@ -4,6 +4,7 @@
     items: [
       "Aadhaar Related Services",
       "PAN Card Assistance",
+      "Voter ID Services",
       "Document Print & Scan",
     ],
   },
@@ -11,22 +12,61 @@
     title: "Certificates & Forms",
     items: [
       "Income / Caste / Domicile Forms",
+      "Birth / Death Certificate Application",
       "Online Application Submission",
       "Correction & Re-Upload Support",
     ],
   },
   {
-    title: "Payments & Utility",
+    title: "Banking & Money Transfer",
+    items: [
+      "AEPS Cash Withdrawal",
+      "Domestic Money Transfer",
+      "Mini Statement & Balance Enquiry",
+      "Micro ATM Support",
+    ],
+  },
+  {
+    title: "Payments & Recharge",
     items: [
       "Electricity Bill Payment",
       "Water / Utility Bill Payment",
+      "Mobile / DTH Recharge",
       "Fast Digital Receipt Support",
+    ],
+  },
+  {
+    title: "Insurance & Pension",
+    items: [
+      "PMJJBY / PMSBY Enrollment",
+      "Atal Pension Yojana Assistance",
+      "Vehicle / Health Insurance Renewal",
+      "Policy Premium Payment",
+    ],
+  },
+  {
+    title: "Travel & Ticketing",
+    items: [
+      "Rail / Bus / Flight Ticket Booking",
+      "Hotel Booking Assistance",
+      "Travel Insurance Support",
+      "Ticket Print & Cancellation Help",
+    ],
+  },
+  {
+    title: "Education & Exam",
+    items: [
+      "Scholarship Form Filling",
+      "College / University Online Forms",
+      "Exam Registration & Admit Card Print",
+      "Result Print & Document Upload",
     ],
   },
   {
     title: "Government Services",
     items: [
       "Government Scheme Registration",
+      "PM Kisan / Ayushman Card Assistance",
       "Jan Sewa Kendra Services",
       "CSC Portal Assistance",
     ],
