@@ -105,6 +105,12 @@ export default function Home() {
 
           <div className="mt-8 flex flex-wrap gap-3">
             <a
+              href="/tools"
+              className="rounded-lg bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
+            >
+              CSC Tools Store
+            </a>
+            <a
               href="https://wa.me/919452657508"
               className="rounded-lg bg-emerald-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-400"
             >
