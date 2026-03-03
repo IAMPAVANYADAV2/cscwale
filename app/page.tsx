@@ -82,6 +82,48 @@ const businessJsonLd = {
   email: "iampavanyadav@gmail.com",
   areaServed: "Jahidpur, Uttar Pradesh, India",
   url: "https://cscwale.com",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Jahidpur",
+    addressRegion: "Uttar Pradesh",
+    addressCountry: "IN",
+  },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 25.40421260879675,
+    longitude: 82.57956408778885,
+  },
+};
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "CSC Wale par kaun kaun si services milti hain?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Aadhaar, PAN, voter ID, income/caste/domicile certificates, bill payments, PVC card printing/order, CSC tools aur CSC automation related support milta hai.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "PVC card aur PVC cropper services available hain?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Haan, PVC card printing/order aur PVC cropper (cutting) support available hai.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "CSC tools aur automation ke liye help milti hai?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "CSC tools, CSC automation aur online form submission me assistance milti hai.",
+      },
+    },
+  ],
 };
 
 export default function Home() {
@@ -159,6 +201,38 @@ export default function Home() {
       </section>
 
       <section className="mx-auto max-w-6xl px-6 pb-12 md:pb-16">
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 className="text-2xl font-bold">Popular CSC Services</h2>
+          <p className="mt-2 text-slate-600">
+            Ye services hamare center par regular basis par available hain. In keywords
+            se log online search karte hain, isliye yaha clearly mention kiya gaya hai.
+          </p>
+          <div className="mt-4 grid gap-4 md:grid-cols-2">
+            <ul className="space-y-2 text-sm text-slate-700">
+              <li>PVC Card Printing / PVC Card Order</li>
+              <li>PVC Cropper (Card Cutting) Support</li>
+              <li>CSC Tools Store / CSC Tools Purchase Guidance</li>
+              <li>CSC Automation Setup & Support</li>
+              <li>eDistrict (Income / Caste / Domicile) Forms</li>
+              <li>Income Certificate / Caste Certificate / Domicile Certificate</li>
+              <li>Aadhaar Update / Aadhaar Print Services</li>
+              <li>PAN Card Application / PAN Correction</li>
+            </ul>
+            <ul className="space-y-2 text-sm text-slate-700">
+              <li>Voter ID Services / Voter Card Print</li>
+              <li>Electricity Bill Payment / Utility Bill Pay</li>
+              <li>Online Form Filling & Document Upload</li>
+              <li>Certificate Reprint / Download Help</li>
+              <li>CSC Digital Seva Portal Assistance</li>
+              <li>Jan Sewa Kendra Services</li>
+              <li>Fast Document Scan & Print</li>
+              <li>Government Scheme Registration</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 pb-12 md:pb-16">
         <div className="grid gap-6 lg:grid-cols-2">
           <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
             <h2 className="text-2xl font-bold">Official Contact Details</h2>
@@ -226,6 +300,10 @@ export default function Home() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
     </main>
   );

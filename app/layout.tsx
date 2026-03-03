@@ -13,18 +13,49 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CSC Wale | ICS CSC & Jan Sewa Kendra Jahidpur",
+  metadataBase: new URL("https://cscwale.com"),
+  title: {
+    default: "CSC Wale | ICS CSC & Jan Sewa Kendra Jahidpur",
+    template: "%s | CSC Wale",
+  },
   description:
-    "CSC Wale (ICS CSC & Jan Sewa Kendra Jahidpur) - trusted CSC and Jan Sewa services for Aadhaar, PAN, online forms, bill payment and government services.",
+    "CSC Wale (ICS CSC & Jan Sewa Kendra Jahidpur) - Aadhaar, PAN, voter ID, income/caste/domicile certificate, bill payment, PVC card and CSC tools services.",
   keywords: [
     "CSC Wale",
     "ICS CSC",
     "Jan Sewa Kendra Jahidpur",
     "CSC center",
+    "CSC tools",
+    "CSC automation",
+    "PVC card printing",
+    "PVC card order",
+    "PVC cropper",
     "Aadhaar service",
     "PAN card service",
+    "Voter ID service",
+    "Income certificate",
+    "Caste certificate",
+    "Domicile certificate",
     "Bhadohi CSC",
   ],
+  alternates: {
+    canonical: "https://cscwale.com",
+  },
+  openGraph: {
+    title: "CSC Wale | ICS CSC & Jan Sewa Kendra Jahidpur",
+    description:
+      "Trusted CSC and Jan Sewa services for Aadhaar, PAN, certificates, bill payment, PVC card, CSC tools and automation.",
+    url: "https://cscwale.com",
+    siteName: "CSC Wale",
+    locale: "hi_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "CSC Wale | ICS CSC & Jan Sewa Kendra Jahidpur",
+    description:
+      "Aadhaar, PAN, certificates, bill payment, PVC card, CSC tools and automation services.",
+  },
 };
 
 export default function RootLayout({
