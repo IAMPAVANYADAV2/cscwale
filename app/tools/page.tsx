@@ -1,4 +1,4 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import sampleFront from "@/image/pvc_cropper_sample_image/sample.png";
 import sampleAlt from "@/image/pvc_cropper_sample_image/sanpme2.png";
 import sampleBatch from "@/image/pvc_cropper_sample_image/sample3.png";
