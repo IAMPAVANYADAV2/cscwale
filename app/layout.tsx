@@ -41,6 +41,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://cscwale.com",
   },
+  icons: {
+    icon: "/icon.png",
+  },
   openGraph: {
     title: "CSC Wale | ICS CSC & Jan Sewa Kendra Jahidpur",
     description:
