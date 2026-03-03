@@ -52,12 +52,21 @@ export const metadata: Metadata = {
     siteName: "CSC Wale",
     locale: "hi_IN",
     type: "website",
+    images: [
+      {
+        url: "/icon.png",
+        width: 512,
+        height: 512,
+        alt: "CSC Wale",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "CSC Wale | ICS CSC & Jan Sewa Kendra Jahidpur",
     description:
       "Aadhaar, PAN, certificates, bill payment, PVC card, CSC tools and automation services.",
+    images: ["/icon.png"],
   },
 };
 

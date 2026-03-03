@@ -202,6 +202,18 @@ export default function Home() {
 
       <section className="mx-auto max-w-6xl px-6 pb-12 md:pb-16">
         <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 className="text-2xl font-bold">Why CSC Wale (Jahidpur, Bhadohi)</h2>
+          <p className="mt-3 text-slate-700">
+            CSC Wale (ICS CSC & Jan Sewa Kendra Jahidpur) local customers ke liye
+            quick document work, government forms, CSC tools aur PVC card services
+            provide karta hai. Hamara focus sahi guidance, transparent process aur
+            timely delivery par hai.
+          </p>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 pb-12 md:pb-16">
+        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
           <h2 className="text-2xl font-bold">Popular CSC Services</h2>
           <p className="mt-2 text-slate-600">
             Ye services hamare center par regular basis par available hain. In keywords
