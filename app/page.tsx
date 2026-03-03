@@ -84,8 +84,11 @@ const businessJsonLd = {
   url: "https://cscwale.com",
   address: {
     "@type": "PostalAddress",
-    addressLocality: "Jahidpur",
+    streetAddress:
+      "Jahidpur Gharwanpur Mathurapur, Post Nai Bazar, Landmark: Banarasi Tent House, NH 135-A (Bypass Road)",
+    addressLocality: "Nai Bazar",
     addressRegion: "Uttar Pradesh",
+    postalCode: "221401",
     addressCountry: "IN",
   },
   geo: {
@@ -252,6 +255,14 @@ export default function Home() {
               <li>
                 <span className="font-semibold">Shop Names:</span> ICS CSC, Jan Sewa
                 Kendra Jahidpur
+              </li>
+              <li>
+                <span className="font-semibold">Address:</span> Jahidpur Gharwanpur
+                Mathurapur, Post Nai Bazar, Dist: Bhadohi, Uttar Pradesh 221401
+              </li>
+              <li>
+                <span className="font-semibold">Landmark:</span> Banarasi Tent House,
+                NH 135-A (Bypass Road)
               </li>
               <li>
                 <span className="font-semibold">Phone:</span>{" "}
