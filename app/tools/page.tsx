@@ -15,7 +15,7 @@ const benefits = [
 
 const whatsappNumber = "919452657508";
 const whatsappMessage = encodeURIComponent(
-  "Namaste, mujhe PVC Cropper by Nexus Core ka 1-Year License (₹491) activate karna hai. Demo aur activation process bhejiye."
+  "Namaste, mujhe PVC Cropper by Nexus Core ka 1-Year License (₹299) activate karna hai. Demo aur activation process bhejiye."
 );
 
 const buyNowLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
@@ -38,9 +38,16 @@ export default function ToolsPage() {
 
           <div className="mt-8 grid gap-4 md:grid-cols-[1.1fr_1fr]">
             <article className="rounded-2xl border border-cyan-200/40 bg-white/10 p-6 backdrop-blur">
-              <p className="text-sm font-semibold text-cyan-200">Annual Plan</p>
-              <p className="mt-2 text-4xl font-black">₹491</p>
-              <p className="mt-1 text-sm text-cyan-100">Sirf ₹491 / Year</p>
+              <p className="text-sm font-semibold text-cyan-200">
+                Limited Time Offer
+              </p>
+              <p className="mt-2 text-4xl font-black">₹299</p>
+              <p className="mt-1 text-sm text-cyan-100">
+                Only ₹25 per month (₹299/year)
+              </p>
+              <p className="mt-3 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-100">
+                Budget-friendly for every CSC
+              </p>
               <ul className="mt-4 space-y-2 text-sm text-blue-100">
                 <li>1 Year Valid License</li>
                 <li>1 System License</li>
@@ -62,6 +69,7 @@ export default function ToolsPage() {
                 CSC center par daily document cropping me time waste ho raha
                 hai? PVC Cropper se batch processing, fixed card-size output
                 aur clean folder management ke saath kaam super fast ho jata
+                hai. Bulk photos ko seconds me crop karke operator ka time bachta
                 hai.
               </p>
               <p className="mt-3 text-sm text-slate-200">
@@ -128,7 +136,8 @@ export default function ToolsPage() {
           <h2 className="text-2xl font-black">CTA Lines</h2>
           <ul className="mt-4 space-y-2 text-sm text-slate-800">
             <li>Ab manual cropping chhodiye. CSC ka time bachaiye.</li>
-            <li>Aaj hi PVC Cropper activate kijiye - sirf ₹491/year.</li>
+            <li>Aaj hi PVC Cropper activate kijiye - sirf ₹299/year.</li>
+            <li>Only ₹25 per month me full 1-year license.</li>
             <li>Professional output, kam mehnat, zyada speed.</li>
           </ul>
 
@@ -137,7 +146,8 @@ export default function ToolsPage() {
             CSC Bhaiyon ke liye best tool! PVC Cropper by Nexus Core.
             Aadhaar/PAN/Voter/Ayushman PDFs ka fast crop + PVC print-ready size
             output. Batch processing + password PDF support + easy use. Price:
-            ₹491 per year. Demo/License ke liye message karein: 9452657508.
+            Only ₹25 per month (₹299/year). Demo/License ke liye message karein:
+            9452657508.
           </p>
           <a
             href={buyNowLink}
