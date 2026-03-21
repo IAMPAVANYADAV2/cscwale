@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createHmac } from "crypto";
 import { FieldValue } from "firebase-admin/firestore";
-import { db } from "@/lib/firebaseAdmin";
+import { getDb } from "@/lib/firebaseAdmin";
 
 type VerifyPayload = {
   orderId: string;
@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
     }
 
-    await db.collection("orders").doc(payload.orderId).update({
+    await getDb().collection("orders").doc(payload.orderId).update({
       paymentStatus: "paid",
       status: "confirmed",
       razorpayPaymentId: payload.razorpayPaymentId,

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { FieldValue } from "firebase-admin/firestore";
-import { db } from "@/lib/firebaseAdmin";
+import { getDb } from "@/lib/firebaseAdmin";
 
 type OrderPayload = {
   name: string;
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const orderRef = await db.collection("orders").add({
+    const orderRef = await getDb().collection("orders").add({
       ...payload,
       status: "pending",
       paymentStatus: "unpaid",

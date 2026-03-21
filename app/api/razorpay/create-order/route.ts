@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/firebaseAdmin";
+import { getDb } from "@/lib/firebaseAdmin";
 
 type CreateOrderPayload = {
   orderId: string;
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
 
     const data = (await response.json()) as { id: string };
 
-    await db.collection("orders").doc(payload.orderId).update({
+    await getDb().collection("orders").doc(payload.orderId).update({
       razorpayOrderId: data.id,
       amountInr: payload.amountInr,
     });
