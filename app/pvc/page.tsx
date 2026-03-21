@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const pvcBundles = [
   {
     title: "Combo 1",
@@ -46,12 +48,12 @@ export default function PVCPage() {
             >
               WhatsApp Now
             </a>
-            <a
+            <Link
               href="/pvc/order"
               className="rounded-lg bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
             >
               Order Online
-            </a>
+            </Link>
             <a
               href="tel:+919452657508"
               className="rounded-lg border border-white/50 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
@@ -108,18 +110,18 @@ export default function PVCPage() {
             >
               Share on WhatsApp
             </a>
-            <a
+            <Link
               href="/pvc/order"
               className="rounded-lg bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-800"
             >
               Order Online
-            </a>
-            <a
+            </Link>
+            <Link
               href="/"
               className="rounded-lg border border-emerald-200 px-5 py-3 text-sm font-semibold text-emerald-900 transition hover:bg-emerald-50"
             >
               Back to Home
-            </a>
+            </Link>
           </div>
         </div>
       </section>

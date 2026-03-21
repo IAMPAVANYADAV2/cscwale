@@ -1,6 +1,13 @@
-﻿const serviceCategories = [
+import React from "react";
+import Link from "next/link";
+
+const serviceCategories = [
   {
     title: "Identity & Documents",
+    icon: "🪪",
+    color: "from-blue-500 to-cyan-500",
+    bg: "bg-blue-50/50",
+    border: "border-blue-100",
     items: [
       "Aadhaar Related Services",
       "PAN Card Assistance",
@@ -10,24 +17,36 @@
   },
   {
     title: "Certificates & Forms",
+    icon: "📜",
+    color: "from-amber-500 to-orange-500",
+    bg: "bg-amber-50/50",
+    border: "border-amber-100",
     items: [
       "Income / Caste / Domicile Forms",
-      "Birth / Death Certificate Application",
+      "Birth / Death Certificate",
       "Online Application Submission",
       "Correction & Re-Upload Support",
     ],
   },
   {
-    title: "Banking & Money Transfer",
+    title: "Banking & Transfer",
+    icon: "🏦",
+    color: "from-emerald-500 to-teal-500",
+    bg: "bg-emerald-50/50",
+    border: "border-emerald-100",
     items: [
       "AEPS Cash Withdrawal",
       "Domestic Money Transfer",
-      "Mini Statement & Balance Enquiry",
+      "Mini Statement & Balance",
       "Micro ATM Support",
     ],
   },
   {
     title: "Payments & Recharge",
+    icon: "⚡",
+    color: "from-purple-500 to-pink-500",
+    bg: "bg-purple-50/50",
+    border: "border-purple-100",
     items: [
       "Electricity Bill Payment",
       "Water / Utility Bill Payment",
@@ -37,36 +56,52 @@
   },
   {
     title: "Insurance & Pension",
+    icon: "🛡️",
+    color: "from-rose-500 to-red-500",
+    bg: "bg-rose-50/50",
+    border: "border-rose-100",
     items: [
       "PMJJBY / PMSBY Enrollment",
       "Atal Pension Yojana Assistance",
-      "Vehicle / Health Insurance Renewal",
+      "Vehicle / Health Insurance",
       "Policy Premium Payment",
     ],
   },
   {
     title: "Travel & Ticketing",
+    icon: "🚆",
+    color: "from-indigo-500 to-blue-500",
+    bg: "bg-indigo-50/50",
+    border: "border-indigo-100",
     items: [
       "Rail / Bus / Flight Ticket Booking",
       "Hotel Booking Assistance",
       "Travel Insurance Support",
-      "Ticket Print & Cancellation Help",
+      "Ticket Print & Cancellation",
     ],
   },
   {
     title: "Education & Exam",
+    icon: "🎓",
+    color: "from-sky-500 to-blue-400",
+    bg: "bg-sky-50/50",
+    border: "border-sky-100",
     items: [
       "Scholarship Form Filling",
-      "College / University Online Forms",
-      "Exam Registration & Admit Card Print",
+      "College / University Forms",
+      "Exam Registration & Admit Card",
       "Result Print & Document Upload",
     ],
   },
   {
     title: "Government Services",
+    icon: "🏛️",
+    color: "from-orange-500 to-red-500",
+    bg: "bg-orange-50/50",
+    border: "border-orange-100",
     items: [
       "Government Scheme Registration",
-      "PM Kisan / Ayushman Card Assistance",
+      "PM Kisan / Ayushman Card",
       "Jan Sewa Kendra Services",
       "CSC Portal Assistance",
     ],
@@ -131,254 +166,232 @@ const faqJsonLd = {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900">
-      <section className="bg-gradient-to-r from-blue-900 via-blue-800 to-cyan-700 text-white">
-        <div className="mx-auto max-w-6xl px-6 py-16 md:py-20">
-          <p className="inline-block rounded-full border border-white/30 px-3 py-1 text-sm tracking-wide">
-            Trusted Local Digital Service Center
-          </p>
-          <h1 className="mt-5 max-w-3xl text-3xl font-extrabold leading-tight md:text-5xl">
-            CSC Wale
-          </h1>
-          <p className="mt-4 max-w-3xl text-base text-blue-100 md:text-lg">
-            Fast, transparent and reliable CSC services. Document work, online
-            forms, bill payment and government services ek hi jagah.
-          </p>
-          <p className="mt-2 text-sm text-blue-100">
-            Branch Name: ICS CSC & Jan Sewa Kendra Jahidpur
-          </p>
+    <main className="min-h-screen bg-[#f8fafc] text-slate-800 selection:bg-cyan-200 selection:text-cyan-900 font-sans">
+      {/* Dynamic Hero Section */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-900 pb-32 pt-20 md:pb-40 md:pt-32">
+        {/* Animated Background Orbs */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-cyan-600/20 blur-[120px] mix-blend-screen animate-pulse duration-10000"></div>
+          <div className="absolute top-[40%] -right-[10%] w-[40%] h-[60%] rounded-full bg-indigo-500/20 blur-[120px] mix-blend-screen animate-pulse duration-7000"></div>
+          <div className="absolute bottom-[-20%] left-[20%] w-[60%] h-[50%] rounded-full bg-blue-600/20 blur-[120px] mix-blend-screen"></div>
+        </div>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a
-              href="/tools"
-              className="rounded-lg bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-300"
-            >
-              CSC Tools Store
-            </a>
-            <a
-              href="/pvc"
-              className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
-            >
-              PVC Card Printing & Delivery
-            </a>
-            <a
-              href="/pvc/order"
-              className="rounded-lg border border-white/40 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
-            >
-              PVC Order Online
-            </a>
+        <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 text-center flex flex-col items-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-white/5 py-1.5 px-4 text-sm font-medium text-cyan-100 backdrop-blur-md shadow-lg shadow-cyan-900/20">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-500"></span>
+            </span>
+            Trusted Local Digital Service Center
+          </div>
+
+          <h1 className="mt-8 text-5xl font-extrabold tracking-tight text-white sm:text-7xl lg:text-8xl drop-shadow-2xl">
+            CSC <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-300">Wale</span>
+          </h1>
+          <p className="mt-6 max-w-2xl text-lg sm:text-xl text-indigo-100/90 leading-relaxed font-medium">
+            Aapke sabhi digital kamo ka ek matra vishwasniya sthan. Document work, online forms, bill payment aur government services tay samay par.
+          </p>
+          <div className="mt-4 inline-block rounded-xl bg-black/30 px-4 py-2 text-sm font-semibold text-amber-300 backdrop-blur-md border border-white/10 shadow-inner">
+            📍 ICS CSC & Jan Sewa Kendra Jahidpur
+          </div>
+
+          <div className="mt-10 flex flex-wrap justify-center gap-4 sm:gap-6">
             <a
               href="https://wa.me/919452657508"
-              className="rounded-lg bg-emerald-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-400"
+              className="group relative inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 px-8 py-4 text-base font-bold text-white shadow-xl shadow-emerald-500/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-emerald-500/40 hover:from-emerald-400 hover:to-teal-400 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900"
             >
-              WhatsApp: 9452657508
+              <span>WhatsApp Us</span>
+              <span className="transition-transform group-hover:translate-x-1">→</span>
             </a>
-            <a
-              href="tel:+919452657508"
-              className="rounded-lg border border-white/40 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+            <Link
+              href="/pvc/order"
+              className="inline-flex items-center justify-center rounded-2xl bg-white px-8 py-4 text-base font-bold text-slate-900 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:bg-cyan-50 hover:shadow-cyan-100/50 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-slate-900"
             >
-              Call Now
-            </a>
-            <a
-              href="mailto:iampavanyadav@gmail.com"
-              className="rounded-lg border border-white/40 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+              🛠️ Order PVC Card
+            </Link>
+            <Link
+              href="/tools"
+              className="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/5 px-8 py-4 text-base font-semibold text-white backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:bg-white/10 hover:border-white/30 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-slate-900"
             >
-              Email Us
-            </a>
+              Explore CSC Tools
+            </Link>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-6 py-12 md:py-16">
-        <div className="grid gap-6 lg:grid-cols-12">
-          <article className="rounded-2xl border border-cyan-100 bg-gradient-to-br from-white via-cyan-50 to-slate-50 p-6 shadow-sm lg:col-span-12">
-            <h2 className="text-2xl font-bold md:text-3xl">Services by Category</h2>
-            <p className="mt-2 text-slate-600">
-              Clear categorization se aapko service jaldi milti hai aur process
-              transparent rehta hai.
-            </p>
-            <div className="mt-4 rounded-xl border border-amber-100 bg-gradient-to-r from-amber-50 via-orange-50 to-rose-50 p-4">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <div>
-                  <p className="text-sm font-semibold text-amber-900">
-                    New: PVC Card Printing & Delivery
-                  </p>
-                  <p className="text-sm text-slate-600">
-                    High quality PVC cards, photo printing bundles aur bulk orders ke
-                    liye dedicated page.
-                  </p>
-                </div>
-                <a
-                  href="/pvc/order"
-                  className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-amber-400"
-                >
-                  Order Online
-                </a>
-              </div>
-            </div>
-            <div className="mt-6 grid gap-5 sm:grid-cols-2">
-              {serviceCategories.map((category, index) => {
-                const themes = [
-                  {
-                    card: "from-cyan-50 via-white to-slate-50 border-cyan-100",
-                    dot: "bg-cyan-600",
-                    title: "text-cyan-900",
-                  },
-                  {
-                    card: "from-emerald-50 via-white to-slate-50 border-emerald-100",
-                    dot: "bg-emerald-600",
-                    title: "text-emerald-900",
-                  },
-                  {
-                    card: "from-amber-50 via-white to-slate-50 border-amber-100",
-                    dot: "bg-amber-600",
-                    title: "text-amber-900",
-                  },
-                  {
-                    card: "from-rose-50 via-white to-slate-50 border-rose-100",
-                    dot: "bg-rose-600",
-                    title: "text-rose-900",
-                  },
-                ];
-                const theme = themes[index % themes.length];
-                return (
-                  <article
-                    key={category.title}
-                    className={`rounded-xl border bg-gradient-to-br p-6 shadow-sm ${theme.card}`}
-                  >
-                    <h3 className={`text-lg font-bold ${theme.title}`}>
-                      {category.title}
-                    </h3>
-                    <ul className="mt-3 space-y-2 text-sm text-slate-700">
-                      {category.items.map((item) => (
-                        <li key={item} className="flex items-start gap-2">
-                          <span
-                            className={`mt-1 inline-block h-2 w-2 rounded-full ${theme.dot}`}
-                          />
-                          <span>{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </article>
-                );
-              })}
-            </div>
-          </article>
-
-          <article className="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 p-6 text-white shadow-sm lg:col-span-7">
-            <h2 className="text-2xl font-bold">Why CSC Wale (Jahidpur, Bhadohi)</h2>
-            <p className="mt-3 text-slate-200">
-              CSC Wale (ICS CSC & Jan Sewa Kendra Jahidpur) local customers ke liye
-              quick document work, government forms, CSC tools aur PVC card services
-              provide karta hai. Hamara focus sahi guidance, transparent process aur
-              timely delivery par hai.
-            </p>
-          </article>
-
-          <article className="rounded-2xl border border-amber-100 bg-gradient-to-br from-amber-50 via-white to-slate-50 p-6 shadow-sm lg:col-span-5">
-            <h2 className="text-2xl font-bold text-amber-900">Popular CSC Services</h2>
-            <p className="mt-2 text-slate-600">
-              Ye services hamare center par regular basis par available hain. In
-              keywords se log online search karte hain, isliye yaha clearly mention
-              kiya gaya hai.
-            </p>
-            <div className="mt-4 grid gap-4 md:grid-cols-2">
-              <ul className="space-y-2 text-sm text-slate-700">
-                <li>PVC Card Printing / PVC Card Order</li>
-                <li>PVC Cropper (Card Cutting) Support</li>
-                <li>CSC Tools Store / CSC Tools Purchase Guidance</li>
-                <li>CSC Automation Setup & Support</li>
-                <li>eDistrict (Income / Caste / Domicile) Forms</li>
-                <li>Income Certificate / Caste Certificate / Domicile Certificate</li>
-                <li>Aadhaar Update / Aadhaar Print Services</li>
-                <li>PAN Card Application / PAN Correction</li>
-              </ul>
-              <ul className="space-y-2 text-sm text-slate-700">
-                <li>Voter ID Services / Voter Card Print</li>
-                <li>Electricity Bill Payment / Utility Bill Pay</li>
-                <li>Online Form Filling & Document Upload</li>
-                <li>Certificate Reprint / Download Help</li>
-                <li>CSC Digital Seva Portal Assistance</li>
-                <li>Jan Sewa Kendra Services</li>
-                <li>Fast Document Scan & Print</li>
-                <li>Government Scheme Registration</li>
-              </ul>
-            </div>
-          </article>
-
-          <article className="rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-50 via-white to-slate-50 p-6 shadow-sm lg:col-span-6">
-            <h2 className="text-2xl font-bold text-emerald-900">
-              Official Contact Details
-            </h2>
-            <ul className="mt-4 space-y-2 text-slate-700">
-              <li>
-                <span className="font-semibold">Shop Names:</span> ICS CSC, Jan Sewa
-                Kendra Jahidpur
-              </li>
-              <li>
-                <span className="font-semibold">Address:</span> Jahidpur Gharwanpur
-                Mathurapur, Post Nai Bazar, Dist: Bhadohi, Uttar Pradesh 221401
-              </li>
-              <li>
-                <span className="font-semibold">Landmark:</span> Banarasi Tent House,
-                NH 135-A (Bypass Road)
-              </li>
-              <li>
-                <span className="font-semibold">Phone:</span>{" "}
-                <a className="text-emerald-700" href="tel:+919452657508">
-                  9452657508
-                </a>
-              </li>
-              <li>
-                <span className="font-semibold">Email:</span>{" "}
-                <a className="text-emerald-700" href="mailto:iampavanyadav@gmail.com">
-                  iampavanyadav@gmail.com
-                </a>
-              </li>
-            </ul>
-            <p className="mt-4 text-sm text-slate-600">
-              Har customer ko proper receipt, clear pricing aur genuine service
-              process diya jata hai.
-            </p>
-          </article>
-
-          <article className="rounded-2xl border border-sky-100 bg-gradient-to-br from-sky-50 via-white to-slate-50 p-6 shadow-sm lg:col-span-6">
-            <h2 className="text-2xl font-bold text-sky-900">Find Us On Google Maps</h2>
-            <p className="mt-3 text-slate-700">
-              Map par names search karein: <strong>CSC Wale</strong>,
-              <strong> ICS CSC</strong> and
-              <strong> Jan Sewa Kendra Jahidpur</strong>.
-            </p>
-            <div className="mt-4 overflow-hidden rounded-xl border border-slate-200">
-              <iframe
-                title="ICS CSC and Jan Sewa Kendra Jahidpur Map"
-                src="https://www.google.com/maps?q=25.40421260879675,82.57956408778885&z=16&output=embed"
-                width="100%"
-                height="260"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
-            </div>
-            <a
-              className="mt-4 inline-block text-sm font-semibold text-sky-700 underline"
-              href="https://www.google.com/maps?q=25.40421260879675,82.57956408778885"
-              target="_blank"
-              rel="noreferrer"
+      {/* Services Grid Section */}
+      <section className="relative z-20 -mt-24 mx-auto max-w-7xl px-6 lg:px-8 pb-24">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {serviceCategories.map((cat, idx) => (
+            <div
+              key={idx}
+              className={`group relative overflow-hidden rounded-3xl bg-white/80 p-6 shadow-xl shadow-slate-200/50 backdrop-blur-xl border ${cat.border} transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-white`}
             >
-              Open Exact Location in Google Maps
-            </a>
-          </article>
+              <div className="absolute top-0 right-0 -mr-8 -mt-8 h-32 w-32 rounded-full bg-gradient-to-br opacity-10 transition-transform duration-500 group-hover:scale-150 blur-2xl"></div>
+              
+              <div className={`inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${cat.color} text-2xl shadow-lg mb-6 transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3`}>
+                <span className="drop-shadow-md">{cat.icon}</span>
+              </div>
+              
+              <h3 className="text-xl font-bold tracking-tight text-slate-900 mb-4">{cat.title}</h3>
+              
+              <ul className="space-y-3">
+                {cat.items.map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm font-medium text-slate-600">
+                    <span className="mt-1 flex h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-br opacity-70 ${cat.color}"></span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </section>
 
-      <footer className="border-t border-slate-200 bg-white">
-        <div className="mx-auto max-w-6xl px-6 py-6 text-sm text-slate-600">
-          <p>
-            Copyright 2026 CSC Wale. All rights reserved.
-          </p>
+      {/* Trust & Features Section */}
+      <section className="mx-auto max-w-7xl px-6 lg:px-8 pb-24">
+        <div className="rounded-[2.5rem] bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 p-8 sm:p-12 lg:p-16 shadow-2xl relative overflow-hidden">
+          {/* Decorative background for the dark card */}
+          <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-indigo-300 via-transparent to-transparent"></div>
+          
+          <div className="relative z-10 grid gap-12 lg:grid-cols-2 items-center">
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
+                Kyun Chunein CSC Wale?
+              </h2>
+              <p className="mt-6 text-lg text-slate-300 leading-relaxed">
+                Jahidpur, Bhadohi ke logo ka bharosemand sathi. Hamari services fast, transparent aur genuine hain. Koi hidden charges nahi, kiyunki aapka samay aur paisa dono keemti hain.
+              </p>
+              <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                <div className="flex items-center gap-3 rounded-2xl bg-white/5 p-4 border border-white/10 backdrop-blur-sm">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/20 text-amber-400 text-xl">⏳</div>
+                  <div>
+                    <h4 className="font-semibold text-white">Fast Processing</h4>
+                    <p className="text-sm text-slate-400">Turant kaam</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 rounded-2xl bg-white/5 p-4 border border-white/10 backdrop-blur-sm">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 text-xl">🤝</div>
+                  <div>
+                    <h4 className="font-semibold text-white">Trustworthy</h4>
+                    <p className="text-sm text-slate-400">Sahi margdarshan</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="rounded-3xl bg-white p-8 shadow-xl">
+              <h3 className="text-2xl font-bold text-slate-900 border-b border-slate-100 pb-4 mb-4">Popular Searches</h3>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  "PVC Card Printing", "Income Certificate", "CSC Tools Setup", 
+                  "Aadhaar Update Help", "PAN Card Online", "Voter ID Card",
+                  "Digital Seva", "Utility Bill Pay"
+                ].map((tag, idx) => (
+                  <span key={idx} className="inline-flex items-center rounded-lg bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-200">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Location and Contact Section */}
+      <section className="mx-auto max-w-7xl px-6 lg:px-8 pb-24">
+        <div className="grid gap-8 lg:grid-cols-2">
+          {/* Contact details */}
+          <div className="rounded-[2.5rem] bg-indigo-50/50 p-8 sm:p-12 border border-indigo-100/60 shadow-lg shadow-indigo-100/20 transition-all hover:shadow-xl hover:bg-indigo-50">
+            <h2 className="text-3xl font-bold text-indigo-950 mb-8 flex items-center gap-4">
+              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">📞</span>
+              Contact Us
+            </h2>
+            <ul className="space-y-6 text-lg text-slate-700">
+              <li className="flex gap-4">
+                <span className="text-indigo-400 mt-1">🏢</span>
+                <div>
+                  <strong className="block text-slate-900">Shop Name</strong>
+                  ICS CSC, Jan Sewa Kendra Jahidpur
+                </div>
+              </li>
+              <li className="flex gap-4">
+                <span className="text-indigo-400 mt-1">📍</span>
+                <div>
+                  <strong className="block text-slate-900">Address</strong>
+                  Jahidpur Gharwanpur Mathurapur, Post Nai Bazar, Dist: Bhadohi, UP 221401
+                  <br/>
+                  <span className="text-sm text-slate-500 mt-1 block">Landmark: Banarasi Tent House, NH 135-A</span>
+                </div>
+              </li>
+              <li className="flex items-center gap-4">
+                <span className="text-emerald-500 text-xl">📱</span>
+                <div>
+                  <a href="tel:+919452657508" className="font-bold text-emerald-600 hover:text-emerald-500 transition-colors text-xl">
+                    +91 9452657508
+                  </a>
+                </div>
+              </li>
+              <li className="flex items-center gap-4">
+                <span className="text-rose-400 text-xl">✉️</span>
+                <div>
+                  <a href="mailto:iampavanyadav@gmail.com" className="font-medium text-slate-600 hover:text-indigo-600 transition-colors">
+                    iampavanyadav@gmail.com
+                  </a>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          {/* Map */}
+          <div className="rounded-[2.5rem] overflow-hidden border border-slate-200 shadow-xl shadow-slate-200/50 group relative">
+            <iframe
+              title="ICS CSC and Jan Sewa Kendra Jahidpur Map"
+              src="https://www.google.com/maps?q=25.40421260879675,82.57956408778885&z=16&output=embed"
+              width="100%"
+              height="100%"
+              className="absolute inset-0 w-full h-full min-h-[400px] grayscale-[20%] contrast-[1.1] opacity-90 transition-all duration-500 group-hover:grayscale-0 group-hover:opacity-100"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+            <div className="absolute top-4 right-4 z-10">
+               <a
+                href="https://www.google.com/maps?q=25.40421260879675,82.57956408778885"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl bg-white/90 backdrop-blur-sm px-4 py-2 text-sm font-bold text-slate-800 shadow-lg transition-transform hover:scale-105"
+              >
+                Open in Maps ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t border-slate-200/60 bg-white">
+        <div className="mx-auto max-w-7xl px-6 py-10 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="text-center md:text-left">
+            <span className="text-xl font-bold tracking-tight text-slate-900">CSC Wale</span>
+            <p className="mt-2 text-sm text-slate-500">
+              © 2026 ICS CSC & Jan Sewa Kendra. All rights reserved.
+            </p>
+          </div>
+          <div className="flex gap-4">
+             <a href="#" className="h-10 w-10 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 transition hover:bg-slate-200 hover:text-slate-900">
+                fb
+             </a>
+             <a href="#" className="h-10 w-10 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 transition hover:bg-slate-200 hover:text-slate-900">
+                ig
+             </a>
+             <a href="https://wa.me/919452657508" className="h-10 w-10 flex items-center justify-center rounded-full bg-emerald-100 text-emerald-600 transition hover:bg-emerald-200 hover:text-emerald-700">
+                wa
+             </a>
+          </div>
         </div>
       </footer>
 
+      {/* SEO Scripts */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd) }}
