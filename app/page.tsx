@@ -156,6 +156,18 @@ export default function Home() {
               CSC Tools Store
             </a>
             <a
+              href="/pvc"
+              className="rounded-lg bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:bg-slate-100"
+            >
+              PVC Card Printing & Delivery
+            </a>
+            <a
+              href="/pvc/order"
+              className="rounded-lg border border-white/40 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
+            >
+              PVC Order Online
+            </a>
+            <a
               href="https://wa.me/919452657508"
               className="rounded-lg bg-emerald-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-400"
             >
@@ -178,79 +190,126 @@ export default function Home() {
       </section>
 
       <section className="mx-auto max-w-6xl px-6 py-12 md:py-16">
-        <h2 className="text-2xl font-bold md:text-3xl">Services by Category</h2>
-        <p className="mt-2 text-slate-600">
-          Clear categorization se aapko service jaldi milti hai aur process transparent
-          rehta hai.
-        </p>
-        <div className="mt-6 grid gap-5 sm:grid-cols-2">
-          {serviceCategories.map((category) => (
-            <article
-              key={category.title}
-              className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
-            >
-              <h3 className="text-lg font-bold text-slate-900">{category.title}</h3>
-              <ul className="mt-3 space-y-2 text-sm text-slate-700">
-                {category.items.map((item) => (
-                  <li key={item} className="flex items-start gap-2">
-                    <span className="mt-1 inline-block h-2 w-2 rounded-full bg-blue-700" />
-                    <span>{item}</span>
-                  </li>
-                ))}
+        <div className="grid gap-6 lg:grid-cols-12">
+          <article className="rounded-2xl border border-cyan-100 bg-gradient-to-br from-white via-cyan-50 to-slate-50 p-6 shadow-sm lg:col-span-12">
+            <h2 className="text-2xl font-bold md:text-3xl">Services by Category</h2>
+            <p className="mt-2 text-slate-600">
+              Clear categorization se aapko service jaldi milti hai aur process
+              transparent rehta hai.
+            </p>
+            <div className="mt-4 rounded-xl border border-amber-100 bg-gradient-to-r from-amber-50 via-orange-50 to-rose-50 p-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p className="text-sm font-semibold text-amber-900">
+                    New: PVC Card Printing & Delivery
+                  </p>
+                  <p className="text-sm text-slate-600">
+                    High quality PVC cards, photo printing bundles aur bulk orders ke
+                    liye dedicated page.
+                  </p>
+                </div>
+                <a
+                  href="/pvc/order"
+                  className="rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-amber-400"
+                >
+                  Order Online
+                </a>
+              </div>
+            </div>
+            <div className="mt-6 grid gap-5 sm:grid-cols-2">
+              {serviceCategories.map((category, index) => {
+                const themes = [
+                  {
+                    card: "from-cyan-50 via-white to-slate-50 border-cyan-100",
+                    dot: "bg-cyan-600",
+                    title: "text-cyan-900",
+                  },
+                  {
+                    card: "from-emerald-50 via-white to-slate-50 border-emerald-100",
+                    dot: "bg-emerald-600",
+                    title: "text-emerald-900",
+                  },
+                  {
+                    card: "from-amber-50 via-white to-slate-50 border-amber-100",
+                    dot: "bg-amber-600",
+                    title: "text-amber-900",
+                  },
+                  {
+                    card: "from-rose-50 via-white to-slate-50 border-rose-100",
+                    dot: "bg-rose-600",
+                    title: "text-rose-900",
+                  },
+                ];
+                const theme = themes[index % themes.length];
+                return (
+                  <article
+                    key={category.title}
+                    className={`rounded-xl border bg-gradient-to-br p-6 shadow-sm ${theme.card}`}
+                  >
+                    <h3 className={`text-lg font-bold ${theme.title}`}>
+                      {category.title}
+                    </h3>
+                    <ul className="mt-3 space-y-2 text-sm text-slate-700">
+                      {category.items.map((item) => (
+                        <li key={item} className="flex items-start gap-2">
+                          <span
+                            className={`mt-1 inline-block h-2 w-2 rounded-full ${theme.dot}`}
+                          />
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </article>
+                );
+              })}
+            </div>
+          </article>
+
+          <article className="rounded-2xl border border-slate-200 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-700 p-6 text-white shadow-sm lg:col-span-7">
+            <h2 className="text-2xl font-bold">Why CSC Wale (Jahidpur, Bhadohi)</h2>
+            <p className="mt-3 text-slate-200">
+              CSC Wale (ICS CSC & Jan Sewa Kendra Jahidpur) local customers ke liye
+              quick document work, government forms, CSC tools aur PVC card services
+              provide karta hai. Hamara focus sahi guidance, transparent process aur
+              timely delivery par hai.
+            </p>
+          </article>
+
+          <article className="rounded-2xl border border-amber-100 bg-gradient-to-br from-amber-50 via-white to-slate-50 p-6 shadow-sm lg:col-span-5">
+            <h2 className="text-2xl font-bold text-amber-900">Popular CSC Services</h2>
+            <p className="mt-2 text-slate-600">
+              Ye services hamare center par regular basis par available hain. In
+              keywords se log online search karte hain, isliye yaha clearly mention
+              kiya gaya hai.
+            </p>
+            <div className="mt-4 grid gap-4 md:grid-cols-2">
+              <ul className="space-y-2 text-sm text-slate-700">
+                <li>PVC Card Printing / PVC Card Order</li>
+                <li>PVC Cropper (Card Cutting) Support</li>
+                <li>CSC Tools Store / CSC Tools Purchase Guidance</li>
+                <li>CSC Automation Setup & Support</li>
+                <li>eDistrict (Income / Caste / Domicile) Forms</li>
+                <li>Income Certificate / Caste Certificate / Domicile Certificate</li>
+                <li>Aadhaar Update / Aadhaar Print Services</li>
+                <li>PAN Card Application / PAN Correction</li>
               </ul>
-            </article>
-          ))}
-        </div>
-      </section>
+              <ul className="space-y-2 text-sm text-slate-700">
+                <li>Voter ID Services / Voter Card Print</li>
+                <li>Electricity Bill Payment / Utility Bill Pay</li>
+                <li>Online Form Filling & Document Upload</li>
+                <li>Certificate Reprint / Download Help</li>
+                <li>CSC Digital Seva Portal Assistance</li>
+                <li>Jan Sewa Kendra Services</li>
+                <li>Fast Document Scan & Print</li>
+                <li>Government Scheme Registration</li>
+              </ul>
+            </div>
+          </article>
 
-      <section className="mx-auto max-w-6xl px-6 pb-12 md:pb-16">
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-2xl font-bold">Why CSC Wale (Jahidpur, Bhadohi)</h2>
-          <p className="mt-3 text-slate-700">
-            CSC Wale (ICS CSC & Jan Sewa Kendra Jahidpur) local customers ke liye
-            quick document work, government forms, CSC tools aur PVC card services
-            provide karta hai. Hamara focus sahi guidance, transparent process aur
-            timely delivery par hai.
-          </p>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-6 pb-12 md:pb-16">
-        <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-          <h2 className="text-2xl font-bold">Popular CSC Services</h2>
-          <p className="mt-2 text-slate-600">
-            Ye services hamare center par regular basis par available hain. In keywords
-            se log online search karte hain, isliye yaha clearly mention kiya gaya hai.
-          </p>
-          <div className="mt-4 grid gap-4 md:grid-cols-2">
-            <ul className="space-y-2 text-sm text-slate-700">
-              <li>PVC Card Printing / PVC Card Order</li>
-              <li>PVC Cropper (Card Cutting) Support</li>
-              <li>CSC Tools Store / CSC Tools Purchase Guidance</li>
-              <li>CSC Automation Setup & Support</li>
-              <li>eDistrict (Income / Caste / Domicile) Forms</li>
-              <li>Income Certificate / Caste Certificate / Domicile Certificate</li>
-              <li>Aadhaar Update / Aadhaar Print Services</li>
-              <li>PAN Card Application / PAN Correction</li>
-            </ul>
-            <ul className="space-y-2 text-sm text-slate-700">
-              <li>Voter ID Services / Voter Card Print</li>
-              <li>Electricity Bill Payment / Utility Bill Pay</li>
-              <li>Online Form Filling & Document Upload</li>
-              <li>Certificate Reprint / Download Help</li>
-              <li>CSC Digital Seva Portal Assistance</li>
-              <li>Jan Sewa Kendra Services</li>
-              <li>Fast Document Scan & Print</li>
-              <li>Government Scheme Registration</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-6xl px-6 pb-12 md:pb-16">
-        <div className="grid gap-6 lg:grid-cols-2">
-          <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-2xl font-bold">Official Contact Details</h2>
+          <article className="rounded-2xl border border-emerald-100 bg-gradient-to-br from-emerald-50 via-white to-slate-50 p-6 shadow-sm lg:col-span-6">
+            <h2 className="text-2xl font-bold text-emerald-900">
+              Official Contact Details
+            </h2>
             <ul className="mt-4 space-y-2 text-slate-700">
               <li>
                 <span className="font-semibold">Shop Names:</span> ICS CSC, Jan Sewa
@@ -266,13 +325,13 @@ export default function Home() {
               </li>
               <li>
                 <span className="font-semibold">Phone:</span>{" "}
-                <a className="text-blue-700" href="tel:+919452657508">
+                <a className="text-emerald-700" href="tel:+919452657508">
                   9452657508
                 </a>
               </li>
               <li>
                 <span className="font-semibold">Email:</span>{" "}
-                <a className="text-blue-700" href="mailto:iampavanyadav@gmail.com">
+                <a className="text-emerald-700" href="mailto:iampavanyadav@gmail.com">
                   iampavanyadav@gmail.com
                 </a>
               </li>
@@ -283,8 +342,8 @@ export default function Home() {
             </p>
           </article>
 
-          <article className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="text-2xl font-bold">Find Us On Google Maps</h2>
+          <article className="rounded-2xl border border-sky-100 bg-gradient-to-br from-sky-50 via-white to-slate-50 p-6 shadow-sm lg:col-span-6">
+            <h2 className="text-2xl font-bold text-sky-900">Find Us On Google Maps</h2>
             <p className="mt-3 text-slate-700">
               Map par names search karein: <strong>CSC Wale</strong>,
               <strong> ICS CSC</strong> and
@@ -301,7 +360,7 @@ export default function Home() {
               />
             </div>
             <a
-              className="mt-4 inline-block text-sm font-semibold text-blue-700 underline"
+              className="mt-4 inline-block text-sm font-semibold text-sky-700 underline"
               href="https://www.google.com/maps?q=25.40421260879675,82.57956408778885"
               target="_blank"
               rel="noreferrer"
