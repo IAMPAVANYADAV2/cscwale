@@ -20,6 +20,7 @@ import {
   ArrowRight,
   HeartHandshake
 } from "lucide-react";
+import ContactForm from "@/components/ContactForm";
 
 const services = [
   {
@@ -248,18 +249,21 @@ export default function Home() {
           ))}
           
           {/* Custom Request CTA in Grid */}
-          <div className="group relative overflow-hidden rounded-3xl border border-indigo-200 bg-indigo-50 p-6 shadow-sm md:col-span-2 lg:col-span-2 flex flex-col md:flex-row items-center justify-between gap-6 transition-all duration-300 hover:shadow-lg hover:border-indigo-300">
+          <div className="group relative overflow-hidden rounded-3xl border border-indigo-200 bg-indigo-50 p-6 shadow-sm md:col-span-2 lg:col-span-3 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 transition-all duration-300 hover:shadow-lg hover:border-indigo-300 max-w-5xl mx-auto w-full">
              <div className="absolute inset-0 bg-gradient-to-r from-indigo-100/50 to-transparent opacity-50"></div>
              <div className="relative z-10 flex-1">
-                <h3 className="text-2xl font-bold text-indigo-900 mb-2">Aapka Kaam List Me Nahi Hai?</h3>
-                <p className="text-indigo-700">Koi bhi custom requirement ho, hume batayein. Hum turant madad karenge.</p>
+                <h3 className="text-3xl font-bold text-indigo-900 mb-3">Aapka Kaam List Me Nahi Hai?</h3>
+                <p className="text-indigo-700 text-lg mb-4">Koi bhi custom requirement ho ya koi online form bharna ho, hume apni detail bhej dijiye. Hum turant check karke aapse sampark karenge.</p>
+                
+                <div className="flex items-center gap-2 text-sm font-medium text-indigo-900 bg-indigo-100/50 w-fit px-4 py-2 rounded-full border border-indigo-200">
+                  <CheckCircle2 className="h-4 w-4 text-emerald-600" />
+                  Fast Response Guaranteed
+                </div>
              </div>
-             <a
-                href="https://wa.me/919452657508?text=Hello,%20I%20have%20a%20custom%20service%20request."
-                className="relative z-10 inline-flex whitespace-nowrap items-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-indigo-200 transition-all hover:bg-indigo-500 hover:-translate-y-0.5"
-              >
-                Message Us <ArrowRight className="h-4 w-4" />
-              </a>
+             
+             <div className="relative z-10 w-full md:w-auto flex-shrink-0">
+               <ContactForm />
+             </div>
           </div>
         </div>
       </section>
