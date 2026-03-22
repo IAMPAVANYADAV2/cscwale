@@ -1,109 +1,119 @@
 import React from "react";
 import Link from "next/link";
+import {
+  FileText,
+  CreditCard,
+  Printer,
+  Briefcase,
+  IndianRupee,
+  ImageIcon,
+  MapPin,
+  CheckCircle2,
+  Clock,
+  Phone,
+  MonitorPlay,
+  FileCheck,
+  Landmark,
+  ShieldCheck,
+  Award,
+  BookOpen,
+  ArrowRight,
+  HeartHandshake
+} from "lucide-react";
 
-const serviceCategories = [
+const services = [
   {
-    title: "Identity & Documents",
-    icon: "🪪",
-    color: "from-blue-500 to-cyan-500",
-    bg: "bg-blue-50/50",
-    border: "border-blue-100",
+    category: "Praman Patra (Certificates)",
+    icon: <Award className="mb-3 h-8 w-8 text-fuchsia-400" />,
+    description: "Ayush, Jati, aur Niwas praman patra (UP).",
+    color: "from-fuchsia-500/20 to-pink-500/5",
+    border: "border-fuchsia-500/20",
     items: [
-      "Aadhaar Related Services",
-      "PAN Card Assistance",
-      "Voter ID Services",
-      "Document Print & Scan",
+      { name: "Income Certificate (Aay)", status: "days" },
+      { name: "Caste Certificate (Jati)", status: "days" },
+      { name: "Domicile Certificate (Niwas)", status: "days" },
+      { name: "Certificate Download", status: "instant" },
     ],
   },
   {
-    title: "Certificates & Forms",
-    icon: "📜",
-    color: "from-amber-500 to-orange-500",
-    bg: "bg-amber-50/50",
-    border: "border-amber-100",
+    category: "Sarkari Dastavez (Govt IDs)",
+    icon: <ShieldCheck className="mb-3 h-8 w-8 text-blue-400" />,
+    description: "Aadhaar, PAN, Voter ID, Ration Card aur anya ID proofs.",
+    color: "from-blue-500/20 to-cyan-500/5",
+    border: "border-blue-500/20",
     items: [
-      "Income / Caste / Domicile Forms",
-      "Birth / Death Certificate",
-      "Online Application Submission",
-      "Correction & Re-Upload Support",
+      { name: "New PAN / Correction", status: "days" },
+      { name: "New Voter ID / Correction", status: "days" },
+      { name: "Ration Card Apply / Add Name", status: "days" },
+      { name: "Family ID Registration", status: "days" },
+      { name: "UDID Card (Divyang)", status: "days" },
     ],
   },
   {
-    title: "Banking & Transfer",
-    icon: "🏦",
-    color: "from-emerald-500 to-teal-500",
-    bg: "bg-emerald-50/50",
-    border: "border-emerald-100",
+    category: "Printing & PVC",
+    icon: <Printer className="mb-3 h-8 w-8 text-emerald-400" />,
+    description: "High quality PVC cards aur photo printing services.",
+    color: "from-emerald-500/20 to-teal-500/5",
+    border: "border-emerald-500/20",
     items: [
-      "AEPS Cash Withdrawal",
-      "Domestic Money Transfer",
-      "Mini Statement & Balance",
-      "Micro ATM Support",
+      { name: "PVC Card Printing", status: "instant" },
+      { name: "Direct PVC Printing Service", status: "instant" },
+      { name: "Passport Size Photos", status: "instant" },
+      { name: "A4 Size Photos", status: "instant" },
+      { name: "Lamination & Print", status: "instant" },
     ],
   },
   {
-    title: "Payments & Recharge",
-    icon: "⚡",
-    color: "from-purple-500 to-pink-500",
-    bg: "bg-purple-50/50",
-    border: "border-purple-100",
+    category: "Student & Jobs",
+    icon: <BookOpen className="mb-3 h-8 w-8 text-amber-400" />,
+    description: "Resume, online forms, aur scholarship aavedan.",
+    color: "from-amber-500/20 to-orange-500/5",
+    border: "border-amber-500/20",
     items: [
-      "Electricity Bill Payment",
-      "Water / Utility Bill Payment",
-      "Mobile / DTH Recharge",
-      "Fast Digital Receipt Support",
+      { name: "Online Form Filling", status: "instant" },
+      { name: "Auto Format Resume", status: "instant" },
+      { name: "Custom Resume Creation", status: "days" },
+      { name: "Scholarship Form (UP)", status: "days" },
     ],
   },
   {
-    title: "Insurance & Pension",
-    icon: "🛡️",
-    color: "from-rose-500 to-red-500",
-    bg: "bg-rose-50/50",
-    border: "border-rose-100",
+    category: "Pension & Yojana",
+    icon: <HeartHandshake className="mb-3 h-8 w-8 text-rose-400" />,
+    description: "Sarkari yojanaayein aur pension schemes.",
+    color: "from-rose-500/20 to-red-500/5",
+    border: "border-rose-500/20",
     items: [
-      "PMJJBY / PMSBY Enrollment",
-      "Atal Pension Yojana Assistance",
-      "Vehicle / Health Insurance",
-      "Policy Premium Payment",
+      { name: "Kanya Sumangala Yojana", status: "days" },
+      { name: "Old Age Pension", status: "days" },
+      { name: "Widow / Divyang Pension", status: "days" },
+      { name: "E-Shram Card", status: "instant" },
+      { name: "Yuva Udyami Yojana", status: "days" },
     ],
   },
   {
-    title: "Travel & Ticketing",
-    icon: "🚆",
-    color: "from-indigo-500 to-blue-500",
-    bg: "bg-indigo-50/50",
-    border: "border-indigo-100",
+    category: "Digital & Editing",
+    icon: <ImageIcon className="mb-3 h-8 w-8 text-indigo-400" />,
+    description: "Image, PDF editing aur photo album designing.",
+    color: "from-indigo-500/20 to-violet-500/5",
+    border: "border-indigo-500/20",
     items: [
-      "Rail / Bus / Flight Ticket Booking",
-      "Hotel Booking Assistance",
-      "Travel Insurance Support",
-      "Ticket Print & Cancellation",
+      { name: "PDF Editing", status: "instant" },
+      { name: "Image Editing", status: "instant" },
+      { name: "Text/Graphics Mod in Images", status: "days" },
+      { name: "Photo Album Designing", status: "days" },
     ],
   },
   {
-    title: "Education & Exam",
-    icon: "🎓",
-    color: "from-sky-500 to-blue-400",
-    bg: "bg-sky-50/50",
-    border: "border-sky-100",
+    category: "Business & Tools",
+    icon: <MonitorPlay className="mb-3 h-8 w-8 text-cyan-400" />,
+    description: "CSC VLE aur businesses ke liye smart tools.",
+    color: "from-cyan-500/20 to-sky-500/5",
+    border: "border-cyan-500/20",
     items: [
-      "Scholarship Form Filling",
-      "College / University Forms",
-      "Exam Registration & Admit Card",
-      "Result Print & Document Upload",
-    ],
-  },
-  {
-    title: "Government Services",
-    icon: "🏛️",
-    color: "from-orange-500 to-red-500",
-    bg: "bg-orange-50/50",
-    border: "border-orange-100",
-    items: [
-      "Government Scheme Registration",
-      "PM Kisan / Ayushman Card",
-      "Jan Sewa Kendra Services",
-      "CSC Portal Assistance",
+      { name: "CSC Automation Tools", status: "instant" },
+      { name: "Billing & Invoice Generation", status: "instant" },
+      { name: "Data Entry Work", status: "days" },
+      { name: "System Status AI", status: "future" },
     ],
   },
 ];
@@ -133,273 +143,230 @@ const businessJsonLd = {
   },
 };
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "CSC Wale par kaun kaun si services milti hain?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Aadhaar, PAN, voter ID, income/caste/domicile certificates, bill payments, PVC card printing/order, CSC tools aur CSC automation related support milta hai.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "PVC card aur PVC cropper services available hain?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Haan, PVC card printing/order aur PVC cropper (cutting) support available hai.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "CSC tools aur automation ke liye help milti hai?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "CSC tools, CSC automation aur online form submission me assistance milti hai.",
-      },
-    },
-  ],
-};
-
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#f8fafc] text-slate-800 selection:bg-cyan-200 selection:text-cyan-900 font-sans">
-      {/* Dynamic Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950 to-blue-900 pb-32 pt-20 md:pb-40 md:pt-32">
-        {/* Animated Background Orbs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-cyan-600/20 blur-[120px] mix-blend-screen animate-pulse duration-10000"></div>
-          <div className="absolute top-[40%] -right-[10%] w-[40%] h-[60%] rounded-full bg-indigo-500/20 blur-[120px] mix-blend-screen animate-pulse duration-7000"></div>
-          <div className="absolute bottom-[-20%] left-[20%] w-[60%] h-[50%] rounded-full bg-blue-600/20 blur-[120px] mix-blend-screen"></div>
-        </div>
+    <main className="min-h-screen bg-[#020617] text-slate-200 selection:bg-cyan-500/30 font-sans overflow-x-hidden">
+      {/* Dynamic Background */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-cyan-900/20 blur-[120px]" />
+        <div className="absolute top-[20%] -right-[10%] w-[40%] h-[60%] rounded-full bg-fuchsia-900/10 blur-[120px]" />
+        <div className="absolute -bottom-[20%] left-[20%] w-[60%] h-[50%] rounded-full bg-blue-900/20 blur-[150px]" />
+        <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.03] mix-blend-overlay"></div>
+      </div>
 
-        <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-8 text-center flex flex-col items-center">
-          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-white/5 py-1.5 px-4 text-sm font-medium text-cyan-100 backdrop-blur-md shadow-lg shadow-cyan-900/20">
+      {/* Hero Section */}
+      <section className="relative z-10 mx-auto max-w-7xl px-6 pt-24 pb-20 lg:px-8 lg:pt-32 lg:pb-28">
+        <div className="flex flex-col items-center text-center">
+          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-cyan-300 backdrop-blur-md mb-8 animate-fade-in-up">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75"></span>
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
             </span>
-            Trusted Local Digital Service Center
+            Trusted Local Digital Center
           </div>
-
-          <h1 className="mt-8 text-5xl font-extrabold tracking-tight text-white sm:text-7xl lg:text-8xl drop-shadow-2xl">
-            CSC <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-300">Wale</span>
+          
+          <h1 className="max-w-4xl text-5xl font-extrabold tracking-tight text-white sm:text-7xl lg:text-8xl drop-shadow-sm mb-6">
+            Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-fuchsia-500">CSC Wale</span>
           </h1>
-          <p className="mt-6 max-w-2xl text-lg sm:text-xl text-indigo-100/90 leading-relaxed font-medium">
-            Aapke sabhi digital kamo ka ek matra vishwasniya sthan. Document work, online forms, bill payment aur government services tay samay par.
+          
+          <p className="max-w-2xl text-lg text-slate-400 md:text-xl mb-10 leading-relaxed">
+            Aapke sabhi digital kaam ka ek bharosemand sthan. Fast processing, 
+            transparent pricing, aur government-ready support.
           </p>
-          <div className="mt-4 inline-block rounded-xl bg-black/30 px-4 py-2 text-sm font-semibold text-amber-300 backdrop-blur-md border border-white/10 shadow-inner">
-            📍 ICS CSC & Jan Sewa Kendra Jahidpur
-          </div>
 
-          <div className="mt-10 flex flex-wrap justify-center gap-4 sm:gap-6">
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <a
               href="https://wa.me/919452657508"
-              className="group relative inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 px-8 py-4 text-base font-bold text-white shadow-xl shadow-emerald-500/20 transition-all duration-300 hover:-translate-y-1 hover:shadow-emerald-500/40 hover:from-emerald-400 hover:to-teal-400 focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-slate-900"
+              className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-400 px-8 py-4 text-base font-bold text-slate-900 shadow-[0_0_40px_-10px_rgba(16,185,129,0.5)] transition-all hover:scale-105 hover:shadow-[0_0_60px_-15px_rgba(16,185,129,0.5)] active:scale-95"
             >
-              <span>WhatsApp Us</span>
-              <span className="transition-transform group-hover:translate-x-1">→</span>
+              <Phone className="h-5 w-5" />
+              <span>WhatsApp Now</span>
+              <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-150%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(150%)]">
+                <div className="relative h-full w-8 bg-white/20" />
+              </div>
             </a>
+            
             <Link
               href="/pvc/order"
-              className="inline-flex items-center justify-center rounded-2xl bg-white px-8 py-4 text-base font-bold text-slate-900 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:bg-cyan-50 hover:shadow-cyan-100/50 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-slate-900"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-8 py-4 text-base font-semibold text-white backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/20 hover:scale-105 active:scale-95 shadow-xl"
             >
-              🛠️ Order PVC Card
+              <CreditCard className="h-5 w-5 text-cyan-400" />
+              Order PVC Card
             </Link>
+
             <Link
               href="/tools"
-              className="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/5 px-8 py-4 text-base font-semibold text-white backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:bg-white/10 hover:border-white/30 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-slate-900"
+              className="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-8 py-4 text-base font-semibold text-white backdrop-blur-md transition-all hover:bg-white/10 hover:border-white/20 hover:scale-105 active:scale-95 shadow-xl"
             >
-              Explore CSC Tools
+              <MonitorPlay className="h-5 w-5 text-fuchsia-400" />
+              Explore Tools
             </Link>
+          </div>
+
+          <div className="mt-16 inline-flex items-center gap-6 rounded-2xl border border-white/5 bg-white/5 px-6 py-4 backdrop-blur-xl">
+            <div className="flex items-center gap-2 text-sm text-slate-300">
+              <CheckCircle2 className="h-4 w-4 text-emerald-400" /> 100% Secure
+            </div>
+            <div className="w-px h-4 bg-white/10"></div>
+            <div className="flex items-center gap-2 text-sm text-slate-300">
+              <Clock className="h-4 w-4 text-amber-400" /> Fast Delivery
+            </div>
+            <div className="w-px h-4 bg-white/10 hidden sm:block"></div>
+            <div className="hidden sm:flex items-center gap-2 text-sm text-slate-300">
+              <MapPin className="h-4 w-4 text-rose-400" /> Jahidpur, UP
+            </div>
           </div>
         </div>
       </section>
 
       {/* Services Grid Section */}
-      <section className="relative z-20 -mt-24 mx-auto max-w-7xl px-6 lg:px-8 pb-24">
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {serviceCategories.map((cat, idx) => (
+      <section className="relative z-10 mx-auto max-w-7xl px-6 pb-24 lg:px-8">
+        <div className="mb-12 flex flex-col items-center text-center">
+          <h2 className="text-3xl font-bold text-white sm:text-4xl">Hamari Services</h2>
+          <p className="mt-4 text-slate-400">Sabhi suvidhayein ek jagah, aapki aasaani ke liye.</p>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {services.map((category, idx) => (
             <div
               key={idx}
-              className={`group relative overflow-hidden rounded-3xl bg-white/80 p-6 shadow-xl shadow-slate-200/50 backdrop-blur-xl border ${cat.border} transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:bg-white`}
+              className={`group relative overflow-hidden rounded-3xl border ${category.border} bg-white/[0.02] p-6 backdrop-blur-xl transition-all duration-300 hover:bg-white/[0.04] hover:shadow-2xl hover:-translate-y-1`}
             >
-              <div className="absolute top-0 right-0 -mr-8 -mt-8 h-32 w-32 rounded-full bg-gradient-to-br opacity-10 transition-transform duration-500 group-hover:scale-150 blur-2xl"></div>
+              <div className={`absolute -right-20 -top-20 h-40 w-40 rounded-full bg-gradient-to-br ${category.color} blur-3xl transition-opacity group-hover:opacity-100 opacity-50`}></div>
               
-              <div className={`inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${cat.color} text-2xl shadow-lg mb-6 transform transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3`}>
-                <span className="drop-shadow-md">{cat.icon}</span>
+              <div className="relative z-10">
+                {category.icon}
+                <h3 className="text-xl font-bold text-white mb-2">{category.category}</h3>
+                <p className="text-sm text-slate-400 mb-6 h-10">{category.description}</p>
+                
+                <div className="space-y-3">
+                  {category.items.map((item, i) => (
+                    <ServiceRow key={i} item={item} />
+                  ))}
+                </div>
               </div>
-              
-              <h3 className="text-xl font-bold tracking-tight text-slate-900 mb-4">{cat.title}</h3>
-              
-              <ul className="space-y-3">
-                {cat.items.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm font-medium text-slate-600">
-                    <span className="mt-1 flex h-1.5 w-1.5 shrink-0 rounded-full bg-gradient-to-br opacity-70 ${cat.color}"></span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
             </div>
           ))}
+          
+          {/* Custom Request CTA in Grid */}
+          <div className="group relative overflow-hidden rounded-3xl border border-indigo-500/20 bg-indigo-500/5 p-6 backdrop-blur-xl md:col-span-2 lg:col-span-2 flex flex-col md:flex-row items-center justify-between gap-6 transition-all duration-300 hover:bg-indigo-500/10">
+             <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-transparent opacity-50"></div>
+             <div className="relative z-10 flex-1">
+                <h3 className="text-2xl font-bold text-white mb-2">Aapka Kaam List Me Nahi Hai?</h3>
+                <p className="text-slate-300">Koi bhi custom requirement ho, hume batayein. Hum turant madad karenge.</p>
+             </div>
+             <a
+                href="https://wa.me/919452657508?text=Hello,%20I%20have%20a%20custom%20service%20request."
+                className="relative z-10 inline-flex whitespace-nowrap items-center gap-2 rounded-xl bg-indigo-500 px-6 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-indigo-400 hover:-translate-y-0.5"
+              >
+                Message Us <ArrowRight className="h-4 w-4" />
+              </a>
+          </div>
         </div>
       </section>
 
-      {/* Trust & Features Section */}
-      <section className="mx-auto max-w-7xl px-6 lg:px-8 pb-24">
-        <div className="rounded-[2.5rem] bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-950 p-8 sm:p-12 lg:p-16 shadow-2xl relative overflow-hidden">
-          {/* Decorative background for the dark card */}
-          <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-indigo-300 via-transparent to-transparent"></div>
-          
-          <div className="relative z-10 grid gap-12 lg:grid-cols-2 items-center">
-            <div>
-              <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl lg:text-5xl">
-                Kyun Chunein CSC Wale?
-              </h2>
-              <p className="mt-6 text-lg text-slate-300 leading-relaxed">
-                Jahidpur, Bhadohi ke logo ka bharosemand sathi. Hamari services fast, transparent aur genuine hain. Koi hidden charges nahi, kiyunki aapka samay aur paisa dono keemti hain.
+      {/* Footer Section */}
+      <footer className="relative z-10 border-t border-white/10 bg-black/20 backdrop-blur-2xl">
+        <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8">
+          <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+            <div className="lg:col-span-2">
+              <span className="text-2xl font-bold tracking-tight text-white flex items-center gap-2 mb-4">
+                 <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center text-white font-black">C</div>
+                 CSC Wale
+              </span>
+              <p className="text-sm text-slate-400 max-w-sm mb-6">
+                 ICS CSC, Jan Sewa Kendra Jahidpur Gharwanpur Mathurapur, Post Nai Bazar, Dist: Bhadohi, UP 221401. Landmark: Banarasi Tent House, NH 135-A
               </p>
-              <div className="mt-8 flex flex-col sm:flex-row gap-4">
-                <div className="flex items-center gap-3 rounded-2xl bg-white/5 p-4 border border-white/10 backdrop-blur-sm">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-500/20 text-amber-400 text-xl">⏳</div>
-                  <div>
-                    <h4 className="font-semibold text-white">Fast Processing</h4>
-                    <p className="text-sm text-slate-400">Turant kaam</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 rounded-2xl bg-white/5 p-4 border border-white/10 backdrop-blur-sm">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 text-xl">🤝</div>
-                  <div>
-                    <h4 className="font-semibold text-white">Trustworthy</h4>
-                    <p className="text-sm text-slate-400">Sahi margdarshan</p>
-                  </div>
-                </div>
+              <div className="flex gap-4">
+                <a href="#" className="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 border border-white/10 text-slate-400 hover:bg-white/10 hover:text-white transition-colors">
+                  <span className="sr-only">Facebook</span>
+                  <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" />
+                  </svg>
+                </a>
+                <a href="https://wa.me/919452657508" className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500 hover:text-white transition-colors">
+                  <span className="sr-only">WhatsApp</span>
+                  <Phone className="h-4 w-4" />
+                </a>
               </div>
             </div>
             
-            <div className="rounded-3xl bg-white p-8 shadow-xl">
-              <h3 className="text-2xl font-bold text-slate-900 border-b border-slate-100 pb-4 mb-4">Popular Searches</h3>
-              <div className="flex flex-wrap gap-2">
-                {[
-                  "PVC Card Printing", "Income Certificate", "CSC Tools Setup", 
-                  "Aadhaar Update Help", "PAN Card Online", "Voter ID Card",
-                  "Digital Seva", "Utility Bill Pay"
-                ].map((tag, idx) => (
-                  <span key={idx} className="inline-flex items-center rounded-lg bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-200">
-                    {tag}
-                  </span>
-                ))}
-              </div>
+            <div>
+              <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Contact Info</h3>
+              <ul className="space-y-3 text-sm text-slate-400">
+                <li className="flex items-start gap-3">
+                  <Phone className="h-5 w-5 text-slate-500 shrink-0" />
+                  <a href="tel:+919452657508" className="hover:text-white transition-colors">+91 9452657508</a>
+                </li>
+                <li className="flex items-start gap-3">
+                  <FileText className="h-5 w-5 text-slate-500 shrink-0" />
+                  <a href="mailto:iampavanyadav@gmail.com" className="hover:text-white transition-colors break-all">iampavanyadav@gmail.com</a>
+                </li>
+              </ul>
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* Location and Contact Section */}
-      <section className="mx-auto max-w-7xl px-6 lg:px-8 pb-24">
-        <div className="grid gap-8 lg:grid-cols-2">
-          {/* Contact details */}
-          <div className="rounded-[2.5rem] bg-indigo-50/50 p-8 sm:p-12 border border-indigo-100/60 shadow-lg shadow-indigo-100/20 transition-all hover:shadow-xl hover:bg-indigo-50">
-            <h2 className="text-3xl font-bold text-indigo-950 mb-8 flex items-center gap-4">
-              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-indigo-100 text-indigo-600">📞</span>
-              Contact Us
-            </h2>
-            <ul className="space-y-6 text-lg text-slate-700">
-              <li className="flex gap-4">
-                <span className="text-indigo-400 mt-1">🏢</span>
-                <div>
-                  <strong className="block text-slate-900">Shop Name</strong>
-                  ICS CSC, Jan Sewa Kendra Jahidpur
-                </div>
-              </li>
-              <li className="flex gap-4">
-                <span className="text-indigo-400 mt-1">📍</span>
-                <div>
-                  <strong className="block text-slate-900">Address</strong>
-                  Jahidpur Gharwanpur Mathurapur, Post Nai Bazar, Dist: Bhadohi, UP 221401
-                  <br/>
-                  <span className="text-sm text-slate-500 mt-1 block">Landmark: Banarasi Tent House, NH 135-A</span>
-                </div>
-              </li>
-              <li className="flex items-center gap-4">
-                <span className="text-emerald-500 text-xl">📱</span>
-                <div>
-                  <a href="tel:+919452657508" className="font-bold text-emerald-600 hover:text-emerald-500 transition-colors text-xl">
-                    +91 9452657508
-                  </a>
-                </div>
-              </li>
-              <li className="flex items-center gap-4">
-                <span className="text-rose-400 text-xl">✉️</span>
-                <div>
-                  <a href="mailto:iampavanyadav@gmail.com" className="font-medium text-slate-600 hover:text-indigo-600 transition-colors">
-                    iampavanyadav@gmail.com
-                  </a>
-                </div>
-              </li>
-            </ul>
+             <div>
+               <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">Location</h3>
+               <div className="rounded-xl overflow-hidden border border-white/10 h-32 relative group">
+                 <iframe
+                   title="Map"
+                   src="https://www.google.com/maps?q=25.40421260879675,82.57956408778885&z=14&output=embed"
+                   width="100%"
+                   height="100%"
+                   className="absolute inset-0 grayscale contrast-125 opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500"
+                   loading="lazy"
+                 />
+               </div>
+             </div>
           </div>
-
-          {/* Map */}
-          <div className="rounded-[2.5rem] overflow-hidden border border-slate-200 shadow-xl shadow-slate-200/50 group relative">
-            <iframe
-              title="ICS CSC and Jan Sewa Kendra Jahidpur Map"
-              src="https://www.google.com/maps?q=25.40421260879675,82.57956408778885&z=16&output=embed"
-              width="100%"
-              height="100%"
-              className="absolute inset-0 w-full h-full min-h-[400px] grayscale-[20%] contrast-[1.1] opacity-90 transition-all duration-500 group-hover:grayscale-0 group-hover:opacity-100"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-            <div className="absolute top-4 right-4 z-10">
-               <a
-                href="https://www.google.com/maps?q=25.40421260879675,82.57956408778885"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl bg-white/90 backdrop-blur-sm px-4 py-2 text-sm font-bold text-slate-800 shadow-lg transition-transform hover:scale-105"
-              >
-                Open in Maps ↗
-              </a>
+          
+          <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+            <p>Copyright &copy; 2026 ICS CSC & Jan Sewa Kendra. All rights reserved.</p>
+            <div className="flex gap-4">
+               <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+               <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t border-slate-200/60 bg-white">
-        <div className="mx-auto max-w-7xl px-6 py-10 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-center md:text-left">
-            <span className="text-xl font-bold tracking-tight text-slate-900">CSC Wale</span>
-            <p className="mt-2 text-sm text-slate-500">
-              © 2026 ICS CSC & Jan Sewa Kendra. All rights reserved.
-            </p>
-          </div>
-          <div className="flex gap-4">
-             <a href="#" className="h-10 w-10 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 transition hover:bg-slate-200 hover:text-slate-900">
-                fb
-             </a>
-             <a href="#" className="h-10 w-10 flex items-center justify-center rounded-full bg-slate-100 text-slate-600 transition hover:bg-slate-200 hover:text-slate-900">
-                ig
-             </a>
-             <a href="https://wa.me/919452657508" className="h-10 w-10 flex items-center justify-center rounded-full bg-emerald-100 text-emerald-600 transition hover:bg-emerald-200 hover:text-emerald-700">
-                wa
-             </a>
           </div>
         </div>
       </footer>
 
-      {/* SEO Scripts */}
+      {/* Structured Data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(businessJsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
     </main>
+  );
+}
+
+function ServiceRow({
+  item,
+}: {
+  item: { name: string; status: string };
+}) {
+  const styles: Record<string, string> = {
+    instant: "border-emerald-500/20 bg-emerald-500/10 text-emerald-300",
+    days: "border-amber-500/20 bg-amber-500/10 text-amber-300",
+    manual: "border-rose-500/20 bg-rose-500/10 text-rose-300",
+    future: "border-slate-500/20 bg-white/5 text-slate-400",
+  };
+
+  const labels: Record<string, string> = {
+    instant: "Instant",
+    days: "1-2 Days",
+    manual: "Manual",
+    future: "Soon",
+  };
+
+  const statusStyle = styles[item.status] || styles.future;
+  const statusLabel = labels[item.status] || item.status;
+
+  return (
+    <div className="flex items-center justify-between gap-3 rounded-xl border border-white/5 bg-white/5 px-4 py-2.5 text-sm transition hover:bg-white/10">
+      <span className="text-slate-200 font-medium">{item.name}</span>
+      <span className={`shrink-0 rounded-full border px-2.5 py-0.5 text-[10px] uppercase tracking-wider font-bold ${statusStyle}`}>
+        {statusLabel}
+      </span>
+    </div>
   );
 }
