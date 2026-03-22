@@ -28,8 +28,8 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ success: true, contactId: contactRef.id });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Contact form submission failed", error);
-    return NextResponse.json({ error: "Failed to submit request" }, { status: 500 });
+    return NextResponse.json({ error: error.message || "Failed to submit request" }, { status: 500 });
   }
 }

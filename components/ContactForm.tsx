@@ -25,8 +25,10 @@ export default function ContactForm() {
         body: JSON.stringify(formData),
       });
 
+      const data = await res.json().catch(() => null);
+
       if (!res.ok) {
-        throw new Error("Pata nahi kya hua, please try again!");
+        throw new Error(data?.error || "Pata nahi kya hua, please try again!");
       }
 
       setSuccess(true);
