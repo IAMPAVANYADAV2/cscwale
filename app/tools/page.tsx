@@ -29,7 +29,7 @@ export default function ToolsPage() {
     <main className="min-h-screen bg-[#f3f6fc] text-slate-900 font-sans">
       
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-900 via-slate-900 to-black text-white py-16 md:py-24">
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-950 to-black text-white py-16 md:py-24">
         {/* Glow Effects */}
         <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-emerald-500/20 blur-3xl mix-blend-screen pointer-events-none" />
         <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-cyan-500/20 blur-3xl mix-blend-screen pointer-events-none" />
