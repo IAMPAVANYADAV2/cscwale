@@ -15,6 +15,10 @@ type OrderFormState = {
   payOnline: boolean;
 };
 
+const MAX_TEXT_LENGTH = 512;
+const PHONE_LENGTH = 10;
+const MAX_ORDER_QUANTITY = 10;
+
 declare global {
   interface Window {
     Razorpay?: new (options: Record<string, unknown>) => {
@@ -226,6 +230,7 @@ export default function PVCOrderPage() {
                   className="mt-2 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
                   value={formState.name}
                   onChange={(event) => updateField("name", event.target.value)}
+                  maxLength={MAX_TEXT_LENGTH}
                   required
                 />
               </label>
@@ -234,9 +239,20 @@ export default function PVCOrderPage() {
                 <input
                   className="mt-2 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
                   value={formState.phone}
-                  onChange={(event) => updateField("phone", event.target.value)}
+                  onChange={(event) =>
+                    updateField(
+                      "phone",
+                      event.target.value.replace(/\D/g, "").slice(0, PHONE_LENGTH)
+                    )
+                  }
+                  inputMode="numeric"
+                  pattern="[0-9]{10}"
+                  maxLength={PHONE_LENGTH}
                   required
                 />
+                <span className="mt-1 block text-[11px] text-slate-500">
+                  Mobile number 10 digits hi rakhein.
+                </span>
               </label>
               <label className="text-sm font-medium text-slate-700">
                 Email (optional)
@@ -244,6 +260,7 @@ export default function PVCOrderPage() {
                   className="mt-2 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
                   value={formState.email}
                   onChange={(event) => updateField("email", event.target.value)}
+                  maxLength={MAX_TEXT_LENGTH}
                 />
               </label>
               <label className="text-sm font-medium text-slate-700">
@@ -251,8 +268,18 @@ export default function PVCOrderPage() {
                 <input
                   className="mt-2 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
                   value={formState.quantity}
-                  onChange={(event) => updateField("quantity", event.target.value)}
+                  onChange={(event) =>
+                    updateField(
+                      "quantity",
+                      event.target.value.replace(/\D/g, "").slice(0, 2)
+                    )
+                  }
+                  inputMode="numeric"
+                  maxLength={2}
                 />
+                <span className="mt-1 block text-[11px] text-slate-500">
+                  Quantity 1 se {MAX_ORDER_QUANTITY} ke beech rakhein.
+                </span>
               </label>
             </div>
 
@@ -263,7 +290,11 @@ export default function PVCOrderPage() {
                 rows={2}
                 value={formState.address}
                 onChange={(event) => updateField("address", event.target.value)}
+                maxLength={MAX_TEXT_LENGTH}
               />
+              <span className="mt-1 block text-[11px] text-slate-500">
+                Har text field 512 characters se kam rakhein.
+              </span>
             </label>
 
             <label className="mt-4 block text-sm font-medium text-slate-700">
@@ -275,6 +306,7 @@ export default function PVCOrderPage() {
                 onChange={(event) =>
                   updateField("comboDetails", event.target.value)
                 }
+                maxLength={MAX_TEXT_LENGTH}
                 required
               />
             </label>
@@ -302,6 +334,7 @@ export default function PVCOrderPage() {
                   className="mt-2 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
                   value={formState.notes}
                   onChange={(event) => updateField("notes", event.target.value)}
+                  maxLength={MAX_TEXT_LENGTH}
                 />
               </label>
             </div>
@@ -326,7 +359,12 @@ export default function PVCOrderPage() {
                 <input
                   className="mt-2 w-full rounded-lg border border-slate-200 px-3 py-2 text-sm"
                   value={formState.amountInr}
-                  onChange={(event) => updateField("amountInr", event.target.value)}
+                  onChange={(event) =>
+                    updateField(
+                      "amountInr",
+                      event.target.value.replace(/[^\d.]/g, "").slice(0, 9)
+                    )
+                  }
                   placeholder="Agreed amount"
                   required
                 />

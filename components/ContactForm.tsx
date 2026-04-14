@@ -3,6 +3,9 @@
 import React, { useState } from "react";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 
+const MAX_TEXT_LENGTH = 512;
+const PHONE_LENGTH = 10;
+
 export default function ContactForm() {
   const [formData, setFormData] = useState({
     name: "",
@@ -65,6 +68,7 @@ export default function ContactForm() {
         type="text"
         placeholder="Aapka Naam"
         required
+        maxLength={MAX_TEXT_LENGTH}
         value={formData.name}
         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
         className="rounded-xl border border-indigo-200 bg-white/60 px-4 py-2.5 text-sm text-indigo-900 placeholder:text-indigo-400 outline-none focus:border-indigo-400 focus:bg-white transition-all shadow-sm"
@@ -73,18 +77,33 @@ export default function ContactForm() {
         type="tel"
         placeholder="Mobile Number"
         required
+        inputMode="numeric"
+        pattern="[0-9]{10}"
+        maxLength={PHONE_LENGTH}
         value={formData.phone}
-        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+        onChange={(e) =>
+          setFormData({
+            ...formData,
+            phone: e.target.value.replace(/\D/g, "").slice(0, PHONE_LENGTH),
+          })
+        }
         className="rounded-xl border border-indigo-200 bg-white/60 px-4 py-2.5 text-sm text-indigo-900 placeholder:text-indigo-400 outline-none focus:border-indigo-400 focus:bg-white transition-all shadow-sm"
       />
+      <p className="-mt-1 text-[11px] text-indigo-500">
+        Mobile number 10 digits hi rakhein.
+      </p>
       <textarea
         placeholder="Requirements likhein..."
         required
         rows={2}
+        maxLength={MAX_TEXT_LENGTH}
         value={formData.message}
         onChange={(e) => setFormData({ ...formData, message: e.target.value })}
         className="rounded-xl border border-indigo-200 bg-white/60 px-4 py-2.5 text-sm text-indigo-900 placeholder:text-indigo-400 outline-none focus:border-indigo-400 focus:bg-white transition-all shadow-sm resize-none"
       />
+      <p className="-mt-1 text-[11px] text-indigo-500">
+        Har text field 512 characters se kam rakhein.
+      </p>
       {error && <p className="text-xs text-rose-500 font-medium">{error}</p>}
       <button
         type="submit"

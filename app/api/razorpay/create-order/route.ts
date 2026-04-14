@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/firebaseAdmin";
+import { assertRateLimit } from "@/lib/rateLimit";
+import {
+  requireBoundedText,
+  requirePositiveAmount,
+} from "@/lib/validation";
 
 type CreateOrderPayload = {
   orderId: string;
@@ -8,14 +13,13 @@ type CreateOrderPayload = {
 
 export async function POST(request: Request) {
   try {
-    const payload = (await request.json()) as CreateOrderPayload;
+    assertRateLimit(request, "razorpay-create-order");
 
-    if (!payload?.orderId || !payload?.amountInr) {
-      return NextResponse.json(
-        { error: "orderId and amountInr are required" },
-        { status: 400 }
-      );
-    }
+    const payload = (await request.json()) as CreateOrderPayload;
+    const orderId = requireBoundedText(payload?.orderId, "Order ID");
+    const amountInr = requirePositiveAmount(payload?.amountInr, "Amount", {
+      max: 100000,
+    });
 
     const keyId = process.env.RAZORPAY_KEY_ID;
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
@@ -37,9 +41,9 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         amount: Math.round(payload.amountInr * 100),
         currency: "INR",
-        receipt: payload.orderId,
+        receipt: orderId,
         notes: {
-          orderId: payload.orderId,
+          orderId,
         },
       }),
     });
@@ -54,17 +58,24 @@ export async function POST(request: Request) {
 
     const data = (await response.json()) as { id: string };
 
-    await getDb().collection("orders").doc(payload.orderId).update({
+    await getDb().collection("orders").doc(orderId).update({
       razorpayOrderId: data.id,
-      amountInr: payload.amountInr,
+      amountInr,
     });
 
     return NextResponse.json({ razorpayOrderId: data.id, keyId });
   } catch (error) {
     console.error("Razorpay create order failed", error);
+    const message =
+      error instanceof Error ? error.message : "Failed to create Razorpay order";
+    const status = message.includes("Too many requests")
+      ? 429
+      : message.includes("required") || message.includes("must be")
+        ? 400
+        : 500;
     return NextResponse.json(
-      { error: "Failed to create Razorpay order" },
-      { status: 500 }
+      { error: message },
+      { status }
     );
   }
 }

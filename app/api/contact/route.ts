@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server";
 import { FieldValue } from "firebase-admin/firestore";
 import { getDb } from "@/lib/firebaseAdmin";
+import { assertRateLimit } from "@/lib/rateLimit";
+import {
+  requireBoundedText,
+  requirePhoneNumber,
+} from "@/lib/validation";
 
 type ContactPayload = {
   name: string;
@@ -10,26 +15,32 @@ type ContactPayload = {
 
 export async function POST(request: Request) {
   try {
-    const payload = (await request.json()) as ContactPayload;
+    assertRateLimit(request, "contact");
 
-    if (!payload?.name || !payload?.phone || !payload?.message) {
-      return NextResponse.json(
-        { error: "Name, phone, and message are required" },
-        { status: 400 }
-      );
-    }
+    const payload = (await request.json()) as ContactPayload;
+    const name = requireBoundedText(payload?.name, "Name");
+    const phone = requirePhoneNumber(payload?.phone);
+    const message = requireBoundedText(payload?.message, "Message");
 
     const contactRef = await getDb().collection("contacts").add({
-      name: payload.name.trim(),
-      phone: payload.phone.trim(),
-      message: payload.message.trim(),
+      name,
+      phone,
+      message,
       status: "new",
       createdAt: FieldValue.serverTimestamp(),
     });
 
     return NextResponse.json({ success: true, contactId: contactRef.id });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Contact form submission failed", error);
-    return NextResponse.json({ error: error.message || "Failed to submit request" }, { status: 500 });
+    const message =
+      error instanceof Error ? error.message : "Failed to submit request";
+    const status = message.includes("Too many requests")
+      ? 429
+      : message.includes("required") || message.includes("must be")
+        ? 400
+        : 500;
+
+    return NextResponse.json({ error: message }, { status });
   }
 }

@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { createHmac } from "crypto";
 import { FieldValue } from "firebase-admin/firestore";
 import { getDb } from "@/lib/firebaseAdmin";
+import { assertRateLimit } from "@/lib/rateLimit";
+import { requireBoundedText } from "@/lib/validation";
 
 type VerifyPayload = {
   orderId: string;
@@ -12,19 +14,22 @@ type VerifyPayload = {
 
 export async function POST(request: Request) {
   try {
-    const payload = (await request.json()) as VerifyPayload;
+    assertRateLimit(request, "razorpay-verify");
 
-    if (
-      !payload?.orderId ||
-      !payload?.razorpayOrderId ||
-      !payload?.razorpayPaymentId ||
-      !payload?.razorpaySignature
-    ) {
-      return NextResponse.json(
-        { error: "Missing payment verification fields" },
-        { status: 400 }
-      );
-    }
+    const payload = (await request.json()) as VerifyPayload;
+    const orderId = requireBoundedText(payload?.orderId, "Order ID");
+    const razorpayOrderId = requireBoundedText(
+      payload?.razorpayOrderId,
+      "Razorpay order ID"
+    );
+    const razorpayPaymentId = requireBoundedText(
+      payload?.razorpayPaymentId,
+      "Razorpay payment ID"
+    );
+    const razorpaySignature = requireBoundedText(
+      payload?.razorpaySignature,
+      "Razorpay signature"
+    );
 
     const keySecret = process.env.RAZORPAY_KEY_SECRET;
     if (!keySecret) {
@@ -34,28 +39,35 @@ export async function POST(request: Request) {
       );
     }
 
-    const body = `${payload.razorpayOrderId}|${payload.razorpayPaymentId}`;
+    const body = `${razorpayOrderId}|${razorpayPaymentId}`;
     const expectedSignature = createHmac("sha256", keySecret)
       .update(body)
       .digest("hex");
 
-    if (expectedSignature !== payload.razorpaySignature) {
+    if (expectedSignature !== razorpaySignature) {
       return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
     }
 
-    await getDb().collection("orders").doc(payload.orderId).update({
+    await getDb().collection("orders").doc(orderId).update({
       paymentStatus: "paid",
       status: "confirmed",
-      razorpayPaymentId: payload.razorpayPaymentId,
+      razorpayPaymentId,
       paymentVerifiedAt: FieldValue.serverTimestamp(),
     });
 
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("Razorpay verify failed", error);
+    const message =
+      error instanceof Error ? error.message : "Payment verification failed";
+    const status = message.includes("Too many requests")
+      ? 429
+      : message.includes("required") || message.includes("must be")
+        ? 400
+        : 500;
     return NextResponse.json(
-      { error: "Payment verification failed" },
-      { status: 500 }
+      { error: message },
+      { status }
     );
   }
 }
