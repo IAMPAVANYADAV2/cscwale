@@ -54,6 +54,12 @@ export default function PVCPage() {
             >
               Order Online
             </Link>
+            <Link
+              href="/pvc/cropper"
+              className="rounded-lg bg-violet-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-700"
+            >
+              Use Image Cropper
+            </Link>
             <a
               href="tel:+919452657508"
               className="rounded-lg border border-white/50 px-5 py-3 text-sm font-semibold text-white transition hover:bg-white/10"
@@ -90,6 +96,49 @@ export default function PVCPage() {
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-6xl px-6 pb-12 md:pb-16">
+        <div className="rounded-2xl border-2 border-violet-200 bg-gradient-to-br from-violet-50 via-white to-purple-50 p-8 shadow-sm">
+          <div className="flex items-start justify-between mb-4">
+            <div>
+              <h2 className="text-2xl font-bold text-violet-900">
+                ✂️ Need to Crop Images First?
+              </h2>
+              <p className="mt-2 text-slate-700">
+                Use our professional PVC Image Cropper tool to prepare your images perfectly before ordering. Free to use, no login needed!
+              </p>
+            </div>
+          </div>
+          <div className="space-y-3 text-sm">
+            <div className="flex items-start gap-3">
+              <span className="text-violet-600 font-bold">✓</span>
+              <span className="text-slate-700">Professional 300 DPI resolution for perfect printing</span>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="text-violet-600 font-bold">✓</span>
+              <span className="text-slate-700">Scale and rotate your image easily</span>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="text-violet-600 font-bold">✓</span>
+              <span className="text-slate-700">Download cropped image instantly for printing</span>
+            </div>
+          </div>
+          <div className="mt-6 flex gap-3">
+            <Link
+              href="/pvc/cropper"
+              className="inline-block rounded-lg bg-gradient-to-r from-violet-600 to-purple-600 px-6 py-3 font-semibold text-white transition hover:shadow-lg"
+            >
+              Open PVC Image Cropper →
+            </Link>
+            <Link
+              href="/tools"
+              className="inline-block rounded-lg border border-violet-200 bg-white px-6 py-3 font-semibold text-violet-900 transition hover:bg-violet-50"
+            >
+              More Professional Tools
+            </Link>
+          </div>
         </div>
       </section>
 

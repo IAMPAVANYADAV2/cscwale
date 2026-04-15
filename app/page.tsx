@@ -149,9 +149,9 @@ export default function Home() {
     <main className="min-h-screen bg-[#f8fafc] text-slate-600 selection:bg-cyan-200 selection:text-slate-900 font-sans overflow-x-hidden">
       {/* Dynamic Background */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-cyan-200/40 blur-[120px]" />
-        <div className="absolute top-[20%] -right-[10%] w-[40%] h-[60%] rounded-full bg-fuchsia-200/40 blur-[120px]" />
-        <div className="absolute -bottom-[20%] left-[20%] w-[60%] h-[50%] rounded-full bg-blue-200/40 blur-[150px]" />
+        <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[50%] rounded-full bg-red-100/30 blur-[120px]" />
+        <div className="absolute top-[20%] -right-[10%] w-[40%] h-[60%] rounded-full bg-blue-100/30 blur-[120px]" />
+        <div className="absolute -bottom-[20%] left-[20%] w-[60%] h-[50%] rounded-full bg-cyan-100/25 blur-[150px]" />
       </div>
 
       {/* Hero Section */}
@@ -165,13 +165,14 @@ export default function Home() {
             Trusted Local Digital Center
           </div>
           
-          <h1 className="max-w-4xl text-5xl font-extrabold tracking-tight text-slate-900 sm:text-7xl lg:text-8xl mb-6">
-            Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-blue-600 to-fuchsia-600">CSC Wale</span>
+          <h1 className="max-w-4xl text-3xl md:text-5xl font-black tracking-tight text-slate-900 mb-4">
+            Your Complete <span className="bg-gradient-to-r from-red-500 to-blue-600 bg-clip-text text-transparent">Digital Services Partner</span>
           </h1>
           
-          <p className="max-w-2xl text-lg text-slate-600 md:text-xl mb-10 leading-relaxed">
-            Aapke sabhi digital kaam ka ek bharosemand sthan. Fast processing, 
-            transparent pricing, aur government-ready support.
+          <h2 className="text-lg md:text-2xl font-bold text-slate-700 mb-6">स्वागत है CSC Wale में - आपके सभी काम की जगह</h2>
+          
+          <p className="max-w-3xl text-base md:text-lg text-slate-600 mb-10 leading-relaxed">
+            Get instant access to all government services, digital tools, and professional printing solutions in one trusted location. Fast processing, transparent pricing, and expert support.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
@@ -220,7 +221,7 @@ export default function Home() {
       </section>
 
       {/* Services Grid Section */}
-      <section className="relative z-10 mx-auto max-w-7xl px-6 pb-24 lg:px-8">
+      <section id="services" className="relative z-10 mx-auto max-w-7xl px-6 pb-24 lg:px-8">
         <div className="mb-12 flex flex-col items-center text-center">
           <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">Hamari Services</h2>
           <p className="mt-4 text-slate-600">Sabhi suvidhayein ek jagah, aapki aasaani ke liye.</p>
@@ -230,9 +231,9 @@ export default function Home() {
           {services.map((category, idx) => (
             <div
               key={idx}
-              className={`group relative overflow-hidden rounded-3xl border ${category.border} bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-slate-300`}
+              className={`group relative overflow-hidden rounded-3xl border-2 ${category.border} bg-gradient-to-br ${category.color} p-6 shadow-md transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:scale-105`}
             >
-              <div className={`absolute -right-20 -top-20 h-40 w-40 rounded-full bg-gradient-to-br ${category.color} blur-3xl transition-opacity group-hover:opacity-100 opacity-60`}></div>
+              <div className={`absolute -right-20 -top-20 h-40 w-40 rounded-full bg-gradient-to-br ${category.color} blur-3xl transition-opacity group-hover:opacity-100 opacity-20`}></div>
               
               <div className="relative z-10">
                 {category.icon}
@@ -249,7 +250,7 @@ export default function Home() {
           ))}
           
           {/* Custom Request CTA in Grid */}
-          <div className="group relative overflow-hidden rounded-3xl border border-indigo-200 bg-indigo-50 p-6 shadow-sm md:col-span-2 lg:col-span-3 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 transition-all duration-300 hover:shadow-lg hover:border-indigo-300 max-w-5xl mx-auto w-full">
+          <div id="contact" className="group relative overflow-hidden rounded-3xl border border-indigo-200 bg-indigo-50 p-6 shadow-sm md:col-span-2 lg:col-span-3 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 transition-all duration-300 hover:shadow-lg hover:border-indigo-300 max-w-5xl mx-auto w-full">
              <div className="absolute inset-0 bg-gradient-to-r from-indigo-100/50 to-transparent opacity-50"></div>
              <div className="relative z-10 flex-1">
                 <h3 className="text-3xl font-bold text-indigo-900 mb-3">Aapka Kaam List Me Nahi Hai?</h3>
