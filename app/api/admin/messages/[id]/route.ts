@@ -6,7 +6,7 @@ import { getDb } from "@/lib/firebaseAdmin";
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Verify admin token
@@ -28,7 +28,9 @@ export async function DELETE(
       );
     }
 
-    const messageId = params.id;
+    // Await params - required in Next.js 16+
+    const { id } = await params;
+    const messageId = id;
     if (!messageId) {
       return NextResponse.json(
         { error: "Message ID is required" },
@@ -92,7 +94,7 @@ export async function DELETE(
 // GET to fetch single message/contact for verification
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // Verify admin token
@@ -104,7 +106,9 @@ export async function GET(
       );
     }
 
-    const messageId = params.id;
+    // Await params - required in Next.js 16+
+    const { id } = await params;
+    const messageId = id;
     if (!messageId) {
       return NextResponse.json(
         { error: "Message ID is required" },
