@@ -18,7 +18,8 @@ import {
   Award,
   BookOpen,
   ArrowRight,
-  HeartHandshake
+  HeartHandshake,
+  Sparkles
 } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
 
@@ -188,19 +189,26 @@ export default function Home() {
             </a>
             
             <Link
-              href="/pvc/order"
-              className="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-8 py-4 text-base font-semibold text-slate-800 shadow-sm transition-all hover:bg-slate-50 hover:border-slate-300 hover:scale-105 active:scale-95"
+              href="/pvc"
+              className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-2xl bg-gradient-to-r from-blue-500 to-cyan-500 px-8 py-4 text-base font-bold text-white shadow-lg shadow-blue-500/30 transition-all hover:scale-105 hover:shadow-xl hover:shadow-blue-500/40 active:scale-95"
             >
-              <CreditCard className="h-5 w-5 text-cyan-500" />
-              Order PVC Card
+              <CreditCard className="h-5 w-5" />
+              <span>PVC Cards</span>
+              <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-150%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(150%)]">
+                <div className="relative h-full w-8 bg-white/20" />
+              </div>
             </Link>
 
             <Link
               href="/tools"
-              className="inline-flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-8 py-4 text-base font-semibold text-slate-800 shadow-sm transition-all hover:bg-slate-50 hover:border-slate-300 hover:scale-105 active:scale-95"
+              className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-2xl bg-gradient-to-r from-fuchsia-600 to-purple-600 px-8 py-4 text-base font-bold text-white shadow-lg shadow-fuchsia-500/30 transition-all hover:scale-105 hover:shadow-xl hover:shadow-fuchsia-500/40 active:scale-95"
             >
-              <MonitorPlay className="h-5 w-5 text-fuchsia-500" />
-              Explore Tools
+              <MonitorPlay className="h-5 w-5" />
+              <span>Premium Tools</span>
+              <Sparkles className="h-4 w-4 text-fuchsia-200" />
+              <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-150%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(150%)]">
+                <div className="relative h-full w-8 bg-white/20" />
+              </div>
             </Link>
           </div>
 

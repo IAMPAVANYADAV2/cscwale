@@ -8,9 +8,9 @@ const contentSecurityPolicy = [
   "img-src 'self' data: blob: https:",
   "font-src 'self' data: https://fonts.gstatic.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
-  "script-src 'self' 'unsafe-inline' https://checkout.razorpay.com",
-  "connect-src 'self' https://api.razorpay.com",
-  "frame-src 'self' https://checkout.razorpay.com https://www.google.com https://maps.google.com",
+  "script-src 'self' 'unsafe-inline'",
+  "connect-src 'self'",
+  "frame-src 'self' https://www.google.com https://maps.google.com",
   "object-src 'none'",
   "upgrade-insecure-requests",
 ].join("; ");

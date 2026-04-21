@@ -285,26 +285,30 @@ export default function ToolsSalesPage() {
 
       <section className="relative z-10 mx-auto max-w-7xl px-6 pb-20 pt-24 lg:px-8 lg:pb-24 lg:pt-32">
         <div className="flex flex-col items-center text-center">
-          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-cyan-200 bg-white/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-cyan-700 shadow-sm backdrop-blur-md">
+          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-fuchsia-200 bg-fuchsia-50/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-fuchsia-700 shadow-sm backdrop-blur-md">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-500" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-fuchsia-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-fuchsia-500" />
             </span>
-            Nexus Core Software by CSC Wale
+            Premium Digital Tools Marketplace
           </div>
 
-          <h1 className="max-w-5xl text-5xl font-extrabold tracking-tight text-slate-900 sm:text-7xl lg:text-8xl">
-            PVC Cropper Studio
-            <span className="block bg-gradient-to-r from-orange-500 via-red-600 to-blue-600 bg-clip-text text-transparent">
-              Trial, Lite aur Pro
+          <h1 className="max-w-5xl text-4xl font-extrabold tracking-tight text-slate-900 sm:text-6xl lg:text-7xl">
+            Boost Your Digital Business with
+            <span className="block mt-2 bg-gradient-to-r from-fuchsia-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
+              High-Performance Tools
             </span>
           </h1>
 
           <p className="mt-6 max-w-3xl text-lg leading-relaxed text-slate-600 md:text-xl">
-            Fast, reliable, aur repeatable PVC-card-style document cropping ke
-            liye Windows desktop solution. Ab aap apne workflow aur system ke
-            hisab se right edition choose kar sakte hain.
+            Explore our curated collection of professional desktop tools designed specifically for CSC operators, digital centers, and printing businesses. More tools coming soon!
           </p>
+
+          <div className="w-full mt-24 pt-16 border-t border-slate-200 relative">
+             <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#f8fafc] px-6 text-sm font-bold uppercase tracking-widest text-slate-400">Featured App</div>
+             
+             <h2 className="text-4xl font-black text-slate-900 mb-4">PVC Cropper Studio</h2>
+             <p className="text-xl text-slate-600 mb-8 max-w-2xl mx-auto">Fast, reliable, and repeatable PVC-card-style document cropping. Choose Trial, Lite, or Pro based on your workflow.</p>
 
           <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <button
@@ -360,6 +364,7 @@ export default function ToolsSalesPage() {
                 <p className="mt-2 text-sm leading-6 text-slate-600">{text}</p>
               </div>
             ))}
+          </div>
           </div>
         </div>
       </section>

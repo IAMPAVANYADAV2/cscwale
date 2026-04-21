@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     "CSC automation",
     "PVC card printing",
     "PVC card order",
-    "PVC cropper",
+    "600 DPI PVC printing",
     "Aadhaar service",
     "PAN card service",
     "Voter ID service",
