@@ -76,7 +76,7 @@ export async function GET(request: NextRequest) {
     const db = getDb();
     const messagesRef = db.collection("customMessages");
 
-    let query = messagesRef;
+    let query: FirebaseFirestore.Query = messagesRef;
     if (userId) {
       query = messagesRef.where("userId", "==", userId);
     }

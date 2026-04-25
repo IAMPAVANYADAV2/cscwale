@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
     const db = getDb();
     const messageType = req.nextUrl.searchParams.get("type") || "all"; // contact, service-request, custom-message
 
-    let query = db.collection("messages");
+    let query: FirebaseFirestore.Query = db.collection("messages");
 
     if (messageType !== "all") {
       query = query.where("type", "==", messageType);
@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
     query = query.orderBy("createdAt", "desc");
 
     const snapshot = await query.limit(500).get();
-    const messages = [];
+    const messages: Record<string, unknown>[] = [];
 
     snapshot.forEach((doc) => {
       messages.push({
@@ -83,7 +83,7 @@ export async function PUT(req: NextRequest) {
     const updateData: any = {
       status: action,
       updatedAt: Timestamp.now(),
-      adminId: auth.userId,
+      adminId: auth.email,
     };
 
     if (adminReply) {
@@ -95,7 +95,7 @@ export async function PUT(req: NextRequest) {
 
     // Log admin action
     await db.collection("adminLogs").add({
-      adminId: auth.userId,
+      adminId: auth.email,
       messageId,
       action,
       timestamp: Timestamp.now(),

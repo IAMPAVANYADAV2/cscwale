@@ -47,13 +47,14 @@ export async function POST(req: NextRequest) {
       const adminDocRef = db.collection("users").doc("admin_" + email.replace(/[^a-zA-Z0-9]/g, "_"));
       const adminDocSnap = await adminDocRef.get();
 
-      if (adminDocSnap.exists && adminDocSnap.data().role === "admin") {
+      const adminData = adminDocSnap.data();
+      if (adminDocSnap.exists && adminData?.role === "admin") {
         return NextResponse.json({
           success: true,
           admin: {
-            uid: adminDocSnap.data().uid,
-            email: adminDocSnap.data().email,
-            displayName: adminDocSnap.data().displayName,
+            uid: adminData.uid,
+            email: adminData.email,
+            displayName: adminData.displayName,
             role: "admin",
           },
         });

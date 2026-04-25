@@ -418,7 +418,7 @@ export default function DashboardPage() {
                 <div>
                   <label className="text-sm font-medium text-gray-700">Account Created</label>
                   <p className="text-gray-800">
-                    {userProfile.createdAt.toDate().toLocaleDateString()}
+                    {new Date(userProfile.createdAt).toLocaleDateString()}
                   </p>
                 </div>
               </div>

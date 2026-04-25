@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     const orderType = req.nextUrl.searchParams.get("type") || "all"; // pvc, cropper, custom, service
     const status = req.nextUrl.searchParams.get("status") || "all";
 
-    let query = db.collection("orders");
+    let query: FirebaseFirestore.Query = db.collection("orders");
 
     if (orderType !== "all") {
       query = query.where("orderType", "==", orderType);
@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
     query = query.orderBy("createdAt", "desc");
 
     const snapshot = await query.limit(1000).get();
-    const orders = [];
+    const orders: Record<string, unknown>[] = [];
 
     snapshot.forEach((doc) => {
       orders.push({
@@ -89,7 +89,7 @@ export async function PUT(req: NextRequest) {
     const updateData = {
       status: action,
       updatedAt: Timestamp.now(),
-      adminId: auth.userId,
+      adminId: auth.email,
       adminNotes: notes || "",
     };
 
@@ -97,7 +97,7 @@ export async function PUT(req: NextRequest) {
 
     // Log admin action
     await db.collection("adminLogs").add({
-      adminId: auth.userId,
+      adminId: auth.email,
       orderId,
       action,
       notes,
@@ -145,7 +145,7 @@ export async function DELETE(req: NextRequest) {
 
     // Log deletion
     await db.collection("adminLogs").add({
-      adminId: auth.userId,
+      adminId: auth.email,
       orderId,
       action: "delete",
       timestamp: Timestamp.now(),

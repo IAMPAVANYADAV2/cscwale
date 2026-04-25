@@ -107,7 +107,7 @@ export async function GET(request: NextRequest) {
     const db = getDb();
     const ordersRef = db.collection("orders");
 
-    let query = ordersRef;
+    let query: FirebaseFirestore.Query = ordersRef;
     if (userId) {
       query = ordersRef.where("userId", "==", userId);
     }

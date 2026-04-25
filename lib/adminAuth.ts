@@ -73,5 +73,5 @@ export async function adminOnlyRoute(
     );
   }
 
-  return handler(request, { adminId: auth.userId, adminData: auth.userData });
+  return handler(request, { adminId: auth.email, adminData: auth.userData });
 }

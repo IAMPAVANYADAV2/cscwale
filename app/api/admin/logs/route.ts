@@ -21,7 +21,7 @@ export async function GET(req: NextRequest) {
     const dateFrom = new Date();
     dateFrom.setDate(dateFrom.getDate() - days);
 
-    let query = db.collection("adminLogs");
+    let query: FirebaseFirestore.Query = db.collection("adminLogs");
 
     if (logsType !== "all") {
       query = query.where("action", "==", logsType);
@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
     query = query.where("timestamp", ">=", dateFrom).orderBy("timestamp", "desc");
 
     const snapshot = await query.limit(500).get();
-    const logs = [];
+    const logs: Record<string, unknown>[] = [];
 
     snapshot.forEach((doc) => {
       logs.push({

@@ -10,9 +10,10 @@ interface UserProfile {
   email: string;
   displayName?: string;
   photoURL?: string;
-  role: "user" | "admin"; // user = customer, admin = service provider
+  role: "user" | "admin";
   createdAt: number;
   lastLogin: number;
+  subscriptionTier?: string;
 }
 
 interface AuthContextType {
