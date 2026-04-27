@@ -3,32 +3,22 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/firebaseAdmin";
+import { Timestamp } from "firebase-admin/firestore";
+import { verifyAdminAuth } from "@/lib/adminAuth";
 
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // Verify admin token
-    const authHeader = request.headers.get("Authorization");
-    if (!authHeader?.startsWith("Bearer ")) {
+    const auth = await verifyAdminAuth(request);
+    if (!auth.isAdmin) {
       return NextResponse.json(
-        { error: "Unauthorized - Admin access required" },
+        { error: auth.error || "Unauthorized - Admin access required" },
         { status: 401 }
       );
     }
 
-    const token = authHeader.substring(7);
-
-    // Verify token format
-    if (!token.startsWith("admin_token_")) {
-      return NextResponse.json(
-        { error: "Invalid token format" },
-        { status: 401 }
-      );
-    }
-
-    // Await params - required in Next.js 16+
     const { id } = await params;
     const messageId = id;
     if (!messageId) {
@@ -40,41 +30,50 @@ export async function DELETE(
 
     const db = getDb();
 
-    // Try to delete from messages collection
-    try {
-      const messageRef = db.collection("messages").doc(messageId);
-      const messageDoc = await messageRef.get();
+    // Try messages collection first
+    const messageRef = db.collection("messages").doc(messageId);
+    const messageDoc = await messageRef.get();
 
-      if (messageDoc.exists) {
-        await messageRef.delete();
-        return NextResponse.json({
-          success: true,
-          message: "Message deleted successfully",
-          deletedId: messageId,
-        });
-      }
-    } catch (err) {
-      console.log("Message not found in messages collection, trying contacts...");
+    if (messageDoc.exists) {
+      await messageRef.delete();
+
+      await db.collection("adminLogs").add({
+        adminId: auth.email,
+        messageId,
+        action: "delete",
+        timestamp: Timestamp.now(),
+        details: `Deleted message ${messageId} from messages collection`,
+      });
+
+      return NextResponse.json({
+        success: true,
+        message: "Message deleted successfully",
+        deletedId: messageId,
+      });
     }
 
-    // Try to delete from contacts collection
-    try {
-      const contactRef = db.collection("contacts").doc(messageId);
-      const contactDoc = await contactRef.get();
+    // Try contacts collection
+    const contactRef = db.collection("contacts").doc(messageId);
+    const contactDoc = await contactRef.get();
 
-      if (contactDoc.exists) {
-        await contactRef.delete();
-        return NextResponse.json({
-          success: true,
-          message: "Contact deleted successfully",
-          deletedId: messageId,
-        });
-      }
-    } catch (err) {
-      console.log("Contact not found in contacts collection");
+    if (contactDoc.exists) {
+      await contactRef.delete();
+
+      await db.collection("adminLogs").add({
+        adminId: auth.email,
+        messageId,
+        action: "delete",
+        timestamp: Timestamp.now(),
+        details: `Deleted contact ${messageId} from contacts collection`,
+      });
+
+      return NextResponse.json({
+        success: true,
+        message: "Contact deleted successfully",
+        deletedId: messageId,
+      });
     }
 
-    // If not found in either collection
     return NextResponse.json(
       { error: "Message or contact not found" },
       { status: 404 }

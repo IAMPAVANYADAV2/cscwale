@@ -22,6 +22,7 @@ import {
   FileText,
   Activity,
   Zap,
+  Trash2,
 } from "lucide-react";
 
 interface Order {
@@ -69,6 +70,17 @@ interface DashboardStats {
   serviceRequests: number;
 }
 
+interface AdminLog {
+  id: string;
+  adminId: string;
+  action: string;
+  orderId?: string;
+  messageId?: string;
+  details: string;
+  notes?: string;
+  timestamp: string;
+}
+
 export default function AdminDashboardPage() {
   const router = useRouter();
   const { admin, loading: authLoading, isAuthenticated, logout: adminLogout } = useAdminAuth();
@@ -97,6 +109,7 @@ export default function AdminDashboardPage() {
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
   const [actionNotes, setActionNotes] = useState("");
   const [operatingAction, setOperatingAction] = useState<string>("");
+  const [logs, setLogs] = useState<AdminLog[]>([]);
 
   // Check admin access
   useEffect(() => {
@@ -111,6 +124,13 @@ export default function AdminDashboardPage() {
       loadAllData();
     }
   }, [isAuthenticated, admin]);
+
+  // Load logs when logs tab is selected
+  useEffect(() => {
+    if (activeTab === "logs" && isAuthenticated) {
+      loadLogs();
+    }
+  }, [activeTab, isAuthenticated]);
 
   const loadAllData = async () => {
     try {
@@ -303,6 +323,68 @@ export default function AdminDashboardPage() {
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error deleting message");
       setOperatingAction("");
+    }
+  };
+
+  const handleDeleteOrder = async (orderId: string) => {
+    try {
+      if (!confirm("Are you sure you want to delete this order? This cannot be undone.")) {
+        return;
+      }
+
+      setOperatingAction("deleting-order");
+
+      const token = localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken");
+
+      if (!token) {
+        setError("Admin token not found");
+        setOperatingAction("");
+        return;
+      }
+
+      const response = await fetch("/api/admin/orders-management", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({ orderId }),
+      });
+
+      if (response.ok) {
+        setSelectedOrder(null);
+        setActionNotes("");
+        setOperatingAction("");
+        await loadAllData();
+        alert("Order deleted successfully!");
+      } else {
+        const data = await response.json();
+        setError(data.error || "Failed to delete order");
+        setOperatingAction("");
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error deleting order");
+      setOperatingAction("");
+    }
+  };
+
+  const loadLogs = async () => {
+    try {
+      const token = localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken");
+      if (!token) return;
+
+      const response = await fetch("/api/admin/logs?days=7", {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setLogs(result.logs || []);
+      }
+    } catch (err) {
+      console.error("Error loading logs:", err);
     }
   };
 
@@ -778,26 +860,77 @@ export default function AdminDashboardPage() {
 
         {/* Logs Tab */}
         {activeTab === "logs" && (
-          <div className="bg-slate-800 rounded-lg border border-slate-700 p-6">
-            <h3 className="text-white font-bold mb-4">Admin Activity Logs</h3>
-            <p className="text-slate-400">Audit trail coming soon...</p>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <h3 className="text-white font-bold flex items-center gap-2">
+                <Activity className="w-5 h-5 text-purple-400" />
+                Admin Activity Logs (Last 7 Days)
+              </h3>
+              <button
+                onClick={loadLogs}
+                className="p-2 hover:bg-slate-700 rounded-lg transition text-slate-300"
+                title="Refresh logs"
+              >
+                <RefreshCw className="w-4 h-4" />
+              </button>
+            </div>
+
+            {logs.length === 0 ? (
+              <div className="bg-slate-800 rounded-lg border border-slate-700 p-8 text-center">
+                <Activity className="w-8 h-8 text-slate-500 mx-auto mb-3" />
+                <p className="text-slate-400">No admin actions logged in the last 7 days.</p>
+              </div>
+            ) : (
+              <div className="bg-slate-800 rounded-lg border border-slate-700 overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="bg-slate-700 border-b border-slate-600">
+                      <th className="px-4 py-3 text-left text-slate-300">Time</th>
+                      <th className="px-4 py-3 text-left text-slate-300">Action</th>
+                      <th className="px-4 py-3 text-left text-slate-300">Details</th>
+                      <th className="px-4 py-3 text-left text-slate-300">Admin</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {logs.map((log) => (
+                      <tr key={log.id} className="border-b border-slate-700 hover:bg-slate-700/50">
+                        <td className="px-4 py-3 text-slate-400 text-xs whitespace-nowrap">
+                          {new Date(log.timestamp).toLocaleString()}
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className={`text-xs px-2 py-1 rounded font-medium ${
+                            log.action === "approved" || log.action === "approve"
+                              ? "bg-green-500/20 text-green-300"
+                              : log.action === "rejected" || log.action === "reject"
+                              ? "bg-red-500/20 text-red-300"
+                              : log.action === "delete"
+                              ? "bg-red-500/20 text-red-400"
+                              : log.action === "reply"
+                              ? "bg-blue-500/20 text-blue-300"
+                              : "bg-purple-500/20 text-purple-300"
+                          }`}>
+                            {log.action}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-slate-300 text-xs max-w-xs truncate">
+                          {log.details}
+                        </td>
+                        <td className="px-4 py-3 text-slate-400 text-xs">{log.adminId}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         )}
 
         {/* Settings Tab */}
         {activeTab === "settings" && (
-          <div className="max-w-2xl space-y-6">
-            <div className="bg-slate-800 rounded-lg p-6 border border-slate-700 space-y-4">
-              <h3 className="text-white font-bold">Admin Settings</h3>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-slate-700 rounded-lg">
-                  <div>
-                    <p className="text-white font-medium">Email Notifications</p>
-                    <p className="text-slate-400 text-sm">Get notified for new orders</p>
-                  </div>
-                  <input type="checkbox" defaultChecked className="w-4 h-4" />
-                </div>
-              </div>
+          <div className="max-w-2xl">
+            <div className="bg-slate-800 rounded-lg p-6 border border-slate-700">
+              <h3 className="text-white font-bold mb-2">Admin Settings</h3>
+              <p className="text-slate-400 text-sm">Settings configuration coming soon.</p>
             </div>
           </div>
         )}
@@ -924,6 +1057,25 @@ export default function AdminDashboardPage() {
                   Process
                 </button>
               </div>
+
+              {/* Delete Order */}
+              <button
+                onClick={() => handleDeleteOrder(selectedOrder.id)}
+                disabled={operatingAction === "deleting-order"}
+                className="w-full px-4 py-2 bg-red-900/30 hover:bg-red-900/50 border border-red-600/50 disabled:opacity-50 text-red-400 rounded transition font-medium flex items-center justify-center gap-2"
+              >
+                {operatingAction === "deleting-order" ? (
+                  <>
+                    <Loader className="w-4 h-4 animate-spin" />
+                    Deleting...
+                  </>
+                ) : (
+                  <>
+                    <Trash2 className="w-4 h-4" />
+                    Delete Order
+                  </>
+                )}
+              </button>
 
               <button
                 onClick={() => {

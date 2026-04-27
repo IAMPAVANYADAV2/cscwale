@@ -25,7 +25,7 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const allowedTiers = ["free", "lite", "trail", "pro"];
+    const allowedTiers = ["free", "lite", "trial", "pro"];
     if (!allowedTiers.includes(subscriptionTier)) {
       return NextResponse.json(
         { error: `Invalid tier. Allowed: ${allowedTiers.join(", ")}` },

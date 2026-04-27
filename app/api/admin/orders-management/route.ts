@@ -75,10 +75,22 @@ export async function PUT(req: NextRequest) {
       );
     }
 
-    const validActions = ["approve", "reject", "decline", "pending", "processing", "completed"];
-    if (!validActions.includes(action)) {
+    const actionToStatus: Record<string, string> = {
+      approve: "approved",
+      approved: "approved",
+      reject: "rejected",
+      rejected: "rejected",
+      decline: "declined",
+      declined: "declined",
+      pending: "pending",
+      processing: "processing",
+      completed: "completed",
+    };
+
+    const status = actionToStatus[action];
+    if (!status) {
       return NextResponse.json(
-        { error: `Invalid action. Allowed: ${validActions.join(", ")}` },
+        { error: `Invalid action. Allowed: ${Object.keys(actionToStatus).join(", ")}` },
         { status: 400 }
       );
     }
@@ -87,7 +99,7 @@ export async function PUT(req: NextRequest) {
     const orderRef = db.collection("orders").doc(orderId);
 
     const updateData = {
-      status: action,
+      status,
       updatedAt: Timestamp.now(),
       adminId: auth.email,
       adminNotes: notes || "",
@@ -102,14 +114,14 @@ export async function PUT(req: NextRequest) {
       action,
       notes,
       timestamp: Timestamp.now(),
-      details: `Changed order ${orderId} status to ${action}`,
+      details: `Changed order ${orderId} status to ${status}`,
     });
 
     const updatedOrder = await orderRef.get();
 
     return NextResponse.json({
       success: true,
-      message: `Order ${action} successfully`,
+      message: `Order ${status} successfully`,
       order: {
         id: updatedOrder.id,
         ...updatedOrder.data(),

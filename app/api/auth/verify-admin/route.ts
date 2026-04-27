@@ -30,13 +30,24 @@ export async function POST(req: NextRequest) {
     }
 
     const email = parts.slice(3).join("_").replace(/___at___/g, "@").replace(/___dot___/g, ".");
-    
+
     // Verify against environment variables
     const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@cscwale.com";
-    
+
     if (email !== ADMIN_EMAIL) {
       return NextResponse.json(
         { error: "Invalid admin email in token" },
+        { status: 401 }
+      );
+    }
+
+    // Verify token hasn't expired (24 hours)
+    const timestamp = parseInt(parts[2]);
+    const tokenAgeHours = (Date.now() - timestamp) / (1000 * 60 * 60);
+
+    if (isNaN(timestamp) || tokenAgeHours > 24) {
+      return NextResponse.json(
+        { error: "Token has expired. Please login again." },
         { status: 401 }
       );
     }
