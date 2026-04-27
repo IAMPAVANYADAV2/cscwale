@@ -41,6 +41,8 @@ type Plan = {
   title: string;
   tagline: string;
   subtitle: string;
+  price: string;
+  priceNote: string;
   cta: string;
   ctaIcon: React.ReactNode;
   accent: string;
@@ -50,6 +52,7 @@ type Plan = {
   screenshot: any;
   highlights: { text: string; included: boolean }[];
   featured?: boolean;
+  order: string;
 };
 
 const plans: Plan[] = [
@@ -59,7 +62,9 @@ const plans: Plan[] = [
     title: "Trial",
     tagline: "Test the workflow before you invest",
     subtitle: "Real feel of the interface, crop quality, and processing — free evaluation.",
-    cta: "Download Trial",
+    price: "Free",
+    priceNote: "Limited to 20 files",
+    cta: "Try Free",
     ctaIcon: <Download className="h-4 w-4" />,
     accent: "from-orange-500 to-amber-500",
     accentBg: "bg-orange-50",
@@ -74,6 +79,7 @@ const plans: Plan[] = [
       { text: "Manual photo fix", included: false },
       { text: "Template Setter", included: false },
     ],
+    order: "lg:order-1",
   },
   {
     id: "lite",
@@ -81,7 +87,9 @@ const plans: Plan[] = [
     title: "Lite",
     tagline: "Simple, fast, practical daily work",
     subtitle: "Built for speed on any PC — import, process, crop. No complexity.",
-    cta: "Choose Lite",
+    price: "₹999",
+    priceNote: "one-time payment",
+    cta: "Get Lite",
     ctaIcon: <Zap className="h-4 w-4" />,
     accent: "from-blue-500 to-cyan-500",
     accentBg: "bg-blue-50",
@@ -96,6 +104,7 @@ const plans: Plan[] = [
       { text: "Manual photo fix", included: false },
       { text: "Template Setter", included: false },
     ],
+    order: "lg:order-3",
   },
   {
     id: "pro",
@@ -103,11 +112,13 @@ const plans: Plan[] = [
     title: "Pro",
     tagline: "Full professional workflow power",
     subtitle: "Complete business edition — batch, templates, password PDFs, everything.",
-    cta: "Upgrade to Pro",
+    price: "₹1,999",
+    priceNote: "one-time payment",
+    cta: "Start with Pro",
     ctaIcon: <Sparkles className="h-4 w-4" />,
-    accent: "from-purple-600 to-indigo-600",
-    accentBg: "bg-purple-50",
-    border: "border-purple-300",
+    accent: "from-blue-600 to-blue-700",
+    accentBg: "bg-blue-50",
+    border: "border-blue-500",
     audience: "Professionals & service centers",
     screenshot: proMain,
     highlights: [
@@ -119,6 +130,7 @@ const plans: Plan[] = [
       { text: "Password PDF handling", included: true },
     ],
     featured: true,
+    order: "lg:order-2",
   },
 ];
 
@@ -644,162 +656,146 @@ export default function ToolsSalesPage() {
       {/* ============================================ */}
       {/* EDITION CARDS */}
       {/* ============================================ */}
-      <section className="relative z-10 mx-auto max-w-7xl px-6 pb-20 lg:px-8">
-        <div className="text-center mb-14">
-          <div className="inline-flex items-center gap-2 rounded-full border border-indigo-200 bg-indigo-50 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-indigo-600 mb-4">
-            <Layers className="h-3.5 w-3.5" />
-            Choose Your Edition
+      <section className="relative z-10 bg-[#f8fafc] py-20">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="text-center mb-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-blue-600 mb-4">
+              <Layers className="h-3.5 w-3.5" />
+              Choose Your Edition
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900">
+              Three Editions, One Perfect Fit
+            </h2>
+            <p className="mt-3 text-slate-500 max-w-2xl mx-auto">
+              Testing se production tak — har level ke user ke liye ek edition
+              designed hai.
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-black text-slate-900">
-            Three Editions, One Perfect Fit
-          </h2>
-          <p className="mt-3 text-slate-500 max-w-2xl mx-auto">
-            Testing se production tak — har level ke user ke liye ek edition
-            designed hai.
-          </p>
-        </div>
 
-        <div className="grid gap-6 lg:grid-cols-3 items-start">
-          {plans.map((plan) => (
-            <article
-              key={plan.id}
-              className={`card-lift group relative overflow-hidden rounded-3xl border-2 transition-all ${
-                plan.featured
-                  ? "border-purple-300 ring-2 ring-purple-400 ring-offset-4 shadow-xl shadow-purple-100/60 bg-gradient-to-br from-purple-950 via-indigo-900 to-indigo-950 text-white lg:-mt-4 lg:pb-2"
-                  : `${plan.border} bg-white hover:shadow-xl`
-              }`}
-            >
-              {/* Glow effect */}
-              <div
-                className={`absolute -right-20 -top-20 h-40 w-40 rounded-full bg-gradient-to-br ${
+          {/* Trust Indicators */}
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mb-14">
+            <div className="flex items-center gap-2 text-sm text-slate-500">
+              <Shield className="h-4 w-4 text-blue-500" />
+              <span>Used by CSC Operators</span>
+            </div>
+            <div className="hidden sm:block h-4 w-px bg-slate-300" />
+            <div className="flex items-center gap-2 text-sm text-slate-500">
+              <Zap className="h-4 w-4 text-blue-500" />
+              <span>Reliable &amp; Fast</span>
+            </div>
+            <div className="hidden sm:block h-4 w-px bg-slate-300" />
+            <div className="flex items-center gap-2 text-sm text-slate-500">
+              <Lock className="h-4 w-4 text-blue-500" />
+              <span>Secure &amp; Verified</span>
+            </div>
+          </div>
+
+          <div className="grid gap-8 lg:grid-cols-3 items-center">
+            {plans.map((plan) => (
+              <article
+                key={plan.id}
+                className={`group relative flex flex-col rounded-2xl transition-all duration-300 hover:-translate-y-1 ${plan.order} ${
                   plan.featured
-                    ? "from-purple-500/20 to-indigo-500/10"
-                    : plan.id === "trial"
-                    ? "from-orange-200/40 to-amber-100/20"
-                    : "from-blue-200/40 to-cyan-100/20"
-                } opacity-60 blur-3xl transition-opacity group-hover:opacity-100`}
-              />
+                    ? "bg-[#eff6ff] border-2 border-blue-500 ring-2 ring-blue-400 ring-offset-4 ring-offset-[#f8fafc] shadow-xl lg:scale-[1.08] z-10"
+                    : "bg-white border border-slate-200 shadow-md hover:shadow-2xl"
+                }`}
+              >
+                {plan.featured && (
+                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
+                    <div className="flex items-center gap-1.5 rounded-full bg-blue-600 px-4 py-1.5 text-[11px] font-black uppercase tracking-[0.15em] text-white shadow-lg shadow-blue-600/30">
+                      <Star className="h-3 w-3 fill-white" />
+                      Best Value
+                    </div>
+                  </div>
+                )}
 
-              {plan.featured && (
-                <div className="absolute right-5 top-5 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-white shadow-md">
-                  Most Popular
-                </div>
-              )}
-
-              <div className="relative z-10 p-6 flex flex-col h-full">
-                {/* Badge */}
-                <div
-                  className={`inline-flex w-fit rounded-full bg-gradient-to-r ${plan.accent} px-3.5 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-white`}
-                >
-                  {plan.badge}
-                </div>
-
-                {/* Title */}
-                <h3
-                  className={`mt-4 text-3xl font-black tracking-tight ${
-                    plan.featured ? "text-white" : "text-slate-900"
-                  }`}
-                >
-                  {plan.title}
-                </h3>
-                <p
-                  className={`mt-1 text-base font-bold ${
-                    plan.featured ? "text-purple-200" : "text-slate-700"
-                  }`}
-                >
-                  {plan.tagline}
-                </p>
-                <p
-                  className={`mt-2 text-sm leading-relaxed ${
-                    plan.featured ? "text-indigo-200" : "text-slate-500"
-                  }`}
-                >
-                  {plan.subtitle}
-                </p>
-
-                {/* Screenshot */}
-                <div
-                  className={`mt-5 rounded-xl overflow-hidden border ${
-                    plan.featured ? "border-indigo-700" : "border-slate-200"
-                  } h-44`}
-                >
-                  <Image
-                    src={plan.screenshot}
-                    alt={`${plan.title} edition screenshot`}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-
-                {/* Best For */}
-                <div
-                  className={`mt-5 rounded-xl px-4 py-3 text-sm ${
-                    plan.featured
-                      ? "bg-indigo-900/50 border border-indigo-700 text-indigo-200"
-                      : "bg-slate-50 border border-slate-100 text-slate-600"
-                  }`}
-                >
-                  <span
-                    className={`text-[10px] font-black uppercase tracking-[0.2em] ${
-                      plan.featured ? "text-indigo-400" : "text-slate-400"
+                <div className="relative z-10 p-8 flex flex-col h-full">
+                  {/* Badge */}
+                  <div
+                    className={`inline-flex w-fit rounded-full px-3.5 py-1 text-[11px] font-bold uppercase tracking-[0.15em] ${
+                      plan.featured
+                        ? "bg-blue-600 text-white"
+                        : plan.id === "trial"
+                        ? "bg-orange-100 text-orange-700"
+                        : "bg-blue-100 text-blue-700"
                     }`}
                   >
-                    Best For:
-                  </span>{" "}
-                  {plan.audience}
-                </div>
-
-                {/* Highlights */}
-                <ul className="mt-5 space-y-2.5 flex-1">
-                  {plan.highlights.map((item, idx) => (
-                    <li key={idx} className="flex items-center gap-2.5 text-sm">
-                      {item.included ? (
-                        <CheckCircle2
-                          className={`h-4 w-4 shrink-0 ${
-                            plan.featured
-                              ? "text-emerald-400"
-                              : "text-emerald-500"
-                          }`}
-                        />
-                      ) : (
-                        <X
-                          className={`h-4 w-4 shrink-0 ${
-                            plan.featured
-                              ? "text-indigo-600"
-                              : "text-slate-300"
-                          }`}
-                        />
-                      )}
-                      <span
-                        className={
-                          item.included
-                            ? plan.featured
-                              ? "text-indigo-100"
-                              : "text-slate-700"
-                            : plan.featured
-                            ? "text-indigo-500 line-through"
-                            : "text-slate-400 line-through"
-                        }
-                      >
-                        {item.text}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-
-                {/* CTA Button — FIXED: uses plan.id instead of hardcoded "pro" */}
-                <button
-                  onClick={() => openPlanModal(plan.id)}
-                  className={`mt-6 group/btn relative w-full overflow-hidden rounded-xl bg-gradient-to-r ${plan.accent} px-6 py-3.5 text-base font-bold text-white shadow-lg transition-all hover:scale-[1.02] hover:shadow-xl active:scale-95 flex items-center justify-center gap-2`}
-                >
-                  {plan.ctaIcon}
-                  {plan.cta}
-                  <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-150%)] group-hover/btn:duration-1000 group-hover/btn:[transform:skew(-12deg)_translateX(150%)]">
-                    <div className="relative h-full w-8 bg-white/15" />
+                    {plan.badge}
                   </div>
-                </button>
-              </div>
-            </article>
-          ))}
+
+                  {/* Title */}
+                  <h3 className="mt-4 text-2xl font-black tracking-tight text-slate-900">
+                    {plan.title}
+                  </h3>
+                  <p className="mt-1 text-sm font-medium text-slate-500">
+                    {plan.tagline}
+                  </p>
+
+                  {/* Price */}
+                  <div className="mt-5 mb-1">
+                    <span className={`text-4xl font-black tracking-tight ${plan.featured ? "text-blue-600" : "text-slate-900"}`}>
+                      {plan.price}
+                    </span>
+                    <p className="mt-1 text-xs text-slate-400">{plan.priceNote}</p>
+                  </div>
+
+                  {/* Divider */}
+                  <div className={`my-5 h-px ${plan.featured ? "bg-blue-200" : "bg-slate-100"}`} />
+
+                  {/* Best For */}
+                  <div className="rounded-lg bg-slate-50 px-3.5 py-2.5 text-sm text-slate-600 mb-5">
+                    <span className="text-[10px] font-black uppercase tracking-[0.15em] text-slate-400">
+                      Best For:
+                    </span>{" "}
+                    {plan.audience}
+                  </div>
+
+                  {/* Highlights */}
+                  <ul className="space-y-3 flex-1">
+                    {plan.highlights.map((item, idx) => (
+                      <li key={idx} className="flex items-center gap-2.5 text-sm">
+                        {item.included ? (
+                          <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-500" />
+                        ) : (
+                          <X className="h-4 w-4 shrink-0 text-slate-300" />
+                        )}
+                        <span
+                          className={
+                            item.included
+                              ? "text-slate-700"
+                              : "text-slate-400 line-through"
+                          }
+                        >
+                          {item.text}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {/* CTA Button */}
+                  <button
+                    onClick={() => openPlanModal(plan.id)}
+                    className={`mt-8 group/btn relative w-full overflow-hidden rounded-xl px-6 text-base font-bold transition-all duration-200 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 ${
+                      plan.featured
+                        ? "bg-[#2563eb] hover:bg-blue-700 text-white shadow-lg shadow-blue-600/25 py-4"
+                        : plan.id === "trial"
+                        ? "border-2 border-slate-300 text-slate-700 hover:border-blue-500 hover:text-blue-600 bg-white py-3.5"
+                        : "bg-slate-800 hover:bg-slate-900 text-white shadow-md py-3.5"
+                    }`}
+                  >
+                    {plan.ctaIcon}
+                    {plan.cta}
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-0.5" />
+                    {plan.featured && (
+                      <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-150%)] group-hover/btn:duration-1000 group-hover/btn:[transform:skew(-12deg)_translateX(150%)]">
+                        <div className="relative h-full w-8 bg-white/15" />
+                      </div>
+                    )}
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 

@@ -35,6 +35,7 @@ export default function Header() {
     { name: "Home", href: "/" },
     { name: "Services", href: "/#services" },
     { name: "PVC Cards", href: "/pvc" },
+    { name: "Aadhar", href: "/aadhar" },
     { name: "Tools", href: "/tools", highlight: true },
     { name: "Contact", href: "/#contact" },
   ];
