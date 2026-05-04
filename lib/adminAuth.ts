@@ -1,11 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/firebaseAdmin";
+import { getAdminAuth } from "@/lib/firebaseAdmin";
+import { getAdminUser } from "@/lib/adminFirebaseService";
+import type { User } from "@/types/admin";
 
-/**
- * Verifies if the request is from an authenticated admin user
- * Expects Authorization header with admin token
- */
-export async function verifyAdminAuth(request: NextRequest) {
+export type VerifiedAdmin = {
+  isAdmin: true;
+  uid: string;
+  email: string;
+  userData: User;
+};
+
+export type AdminAuthFailure = {
+  isAdmin: false;
+  error: string;
+};
+
+export async function verifyAdminAuth(request: NextRequest): Promise<VerifiedAdmin | AdminAuthFailure> {
   try {
     const authHeader = request.headers.get("Authorization");
     if (!authHeader?.startsWith("Bearer ")) {
@@ -13,43 +23,18 @@ export async function verifyAdminAuth(request: NextRequest) {
     }
 
     const token = authHeader.substring(7);
+    const decodedToken = await getAdminAuth().verifyIdToken(token);
+    const userData = await getAdminUser(decodedToken.uid);
 
-    // Verify token format: admin_token_TIMESTAMP_EMAIL
-    if (!token.startsWith("admin_token_")) {
-      return { isAdmin: false, error: "Invalid token format" };
+    if (userData?.role !== "admin" || userData.isDeleted || userData.isBlocked) {
+      return { isAdmin: false, error: "Admin access required" };
     }
 
-    // Extract email from token
-    const parts = token.split("_");
-    if (parts.length < 4) {
-      return { isAdmin: false, error: "Invalid token structure" };
-    }
-
-    // Reconstruct email from token (handles ___at___ and ___dot___)
-    const emailParts = parts.slice(3).join("_");
-    const email = emailParts.replace(/___at___/g, "@").replace(/___dot___/g, ".");
-    
-    // Verify against environment variable
-    const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "admin@cscwale.com";
-    
-    if (email !== ADMIN_EMAIL) {
-      return { isAdmin: false, error: "Token email does not match admin email" };
-    }
-
-    // Verify token hasn't expired (token created less than 24 hours ago)
-    const tokenParts = token.split("_");
-    const timestamp = parseInt(tokenParts[2]);
-    const now = Date.now();
-    const tokenAgeHours = (now - timestamp) / (1000 * 60 * 60);
-    
-    if (tokenAgeHours > 24) {
-      return { isAdmin: false, error: "Token has expired" };
-    }
-
-    return { 
-      isAdmin: true, 
-      email,
-      userData: { role: "admin", email } 
+    return {
+      isAdmin: true,
+      uid: decodedToken.uid,
+      email: userData.email,
+      userData,
     };
   } catch (error) {
     console.error("Admin auth verification error:", error);
@@ -57,12 +42,9 @@ export async function verifyAdminAuth(request: NextRequest) {
   }
 }
 
-/**
- * Middleware wrapper for admin-only API routes
- */
 export async function adminOnlyRoute(
   request: NextRequest,
-  handler: (request: NextRequest, context: any) => Promise<NextResponse>
+  handler: (request: NextRequest, context: { adminId: string; adminData: User }) => Promise<NextResponse>
 ) {
   const auth = await verifyAdminAuth(request);
 
@@ -73,5 +55,5 @@ export async function adminOnlyRoute(
     );
   }
 
-  return handler(request, { adminId: auth.email, adminData: auth.userData });
+  return handler(request, { adminId: auth.uid, adminData: auth.userData });
 }

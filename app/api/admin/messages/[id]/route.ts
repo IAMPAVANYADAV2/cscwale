@@ -35,19 +35,23 @@ export async function DELETE(
     const messageDoc = await messageRef.get();
 
     if (messageDoc.exists) {
-      await messageRef.delete();
+      await messageRef.update({
+        isDeleted: true,
+        deletedAt: Timestamp.now(),
+        deletedBy: auth.email,
+      });
 
       await db.collection("adminLogs").add({
         adminId: auth.email,
         messageId,
-        action: "delete",
+        action: "soft-delete",
         timestamp: Timestamp.now(),
-        details: `Deleted message ${messageId} from messages collection`,
+        details: `Soft-deleted message ${messageId} from messages collection`,
       });
 
       return NextResponse.json({
         success: true,
-        message: "Message deleted successfully",
+        message: "Message moved to trash",
         deletedId: messageId,
       });
     }
@@ -57,19 +61,23 @@ export async function DELETE(
     const contactDoc = await contactRef.get();
 
     if (contactDoc.exists) {
-      await contactRef.delete();
+      await contactRef.update({
+        isDeleted: true,
+        deletedAt: Timestamp.now(),
+        deletedBy: auth.email,
+      });
 
       await db.collection("adminLogs").add({
         adminId: auth.email,
         messageId,
-        action: "delete",
+        action: "soft-delete",
         timestamp: Timestamp.now(),
-        details: `Deleted contact ${messageId} from contacts collection`,
+        details: `Soft-deleted contact ${messageId} from contacts collection`,
       });
 
       return NextResponse.json({
         success: true,
-        message: "Contact deleted successfully",
+        message: "Contact moved to trash",
         deletedId: messageId,
       });
     }
@@ -90,22 +98,19 @@ export async function DELETE(
   }
 }
 
-// GET to fetch single message/contact for verification
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // Verify admin token
-    const authHeader = request.headers.get("Authorization");
-    if (!authHeader?.startsWith("Bearer ")) {
+    const auth = await verifyAdminAuth(request);
+    if (!auth.isAdmin) {
       return NextResponse.json(
-        { error: "Unauthorized - Admin access required" },
+        { error: auth.error || "Unauthorized - Admin access required" },
         { status: 401 }
       );
     }
 
-    // Await params - required in Next.js 16+
     const { id } = await params;
     const messageId = id;
     if (!messageId) {
@@ -131,8 +136,8 @@ export async function GET(
           },
         });
       }
-    } catch (err) {
-      console.log("Message not found");
+    } catch {
+      // message not found, try contacts
     }
 
     // Try to get from contacts collection
@@ -149,8 +154,8 @@ export async function GET(
           },
         });
       }
-    } catch (err) {
-      console.log("Contact not found");
+    } catch {
+      // contact not found
     }
 
     return NextResponse.json(

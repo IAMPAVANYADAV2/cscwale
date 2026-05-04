@@ -26,6 +26,12 @@ const productByPlan: Record<BuyPlan, string> = {
   pro: "ePVC Cropper Pro Version",
 };
 
+const priceByPlan: Record<BuyPlan, number> = {
+  trial: 0,
+  lite: 399,
+  pro: 599,
+};
+
 export async function POST(request: Request) {
   try {
     assertRateLimit(request, "buy-pvc");
@@ -43,17 +49,27 @@ export async function POST(request: Request) {
       "Source section"
     );
 
+    const timestamp = FieldValue.serverTimestamp();
     const leadRef = await getDb().collection("leads").add({
       name,
       phone,
+      email: "",
+      subject: `${productByPlan[plan]} Inquiry`,
+      message: `${name} requested follow-up for ${productByPlan[plan]}. Address/CSC: ${address}`,
       address,
       plan,
       product: productByPlan[plan],
+      amount: priceByPlan[plan],
       sourcePage: sourcePage || null,
       sourceSection: sourceSection || null,
       leadType: "tools_page_inquiry",
-      status: "new",
-      createdAt: FieldValue.serverTimestamp(),
+      status: "unread",
+      adminNote: "",
+      isDeleted: false,
+      deletedAt: null,
+      deletedBy: null,
+      createdAt: timestamp,
+      updatedAt: timestamp,
     });
 
     return NextResponse.json({ success: true, leadId: leadRef.id });

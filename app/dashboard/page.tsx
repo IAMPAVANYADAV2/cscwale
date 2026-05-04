@@ -45,7 +45,7 @@ interface SubscriptionTier {
 
 export default function DashboardPage() {
   const router = useRouter();
-  const { user, userProfile, logout, loading: authLoading } = useAuth();
+  const { user, userProfile, currentPlan, logout, loading: authLoading } = useAuth();
   const [orders, setOrders] = useState<Order[]>([]);
   const [customMessages, setCustomMessages] = useState<CustomMessage[]>([]);
   const [activeTab, setActiveTab] = useState<"overview" | "orders" | "messages" | "settings">(
@@ -147,6 +147,11 @@ export default function DashboardPage() {
   };
 
   const currentTier = subscriptionTiers[userProfile.subscriptionTier || "free"] || subscriptionTiers.free;
+  const currentPlanName = currentPlan?.name || currentTier.name;
+  const planExpiry =
+    userProfile.planExpiryDate && !Number.isNaN(new Date(userProfile.planExpiryDate).getTime())
+      ? new Date(userProfile.planExpiryDate).toLocaleDateString()
+      : "No expiry";
   const unreadMessages = customMessages.filter((msg) => !msg.isRead).length;
   const completedOrders = orders.filter((order) => order.status === "completed").length;
   const pendingOrders = orders.filter((order) => order.status === "pending" || order.status === "processing")
@@ -165,7 +170,7 @@ export default function DashboardPage() {
             <div className="flex items-center gap-4">
               <div className="text-right">
                 <p className="text-sm text-gray-600">{userProfile.displayName || user.email}</p>
-                <p className="text-xs text-indigo-600 font-semibold">{currentTier.name} Plan</p>
+                <p className="text-xs text-indigo-600 font-semibold">{currentPlanName} Plan</p>
               </div>
               {user.photoURL && (
                 <img
@@ -224,7 +229,8 @@ export default function DashboardPage() {
               <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 border border-indigo-200 rounded-lg p-6">
                 <div className="text-3xl mb-2">{currentTier.icon}</div>
                 <p className="text-sm text-gray-600">Current Plan</p>
-                <p className="text-2xl font-bold text-indigo-600">{currentTier.name}</p>
+                <p className="text-2xl font-bold text-indigo-600">{currentPlanName}</p>
+                <p className="mt-1 text-xs text-indigo-700">Expires: {planExpiry}</p>
                 <button className="mt-4 text-xs bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-700">
                   Upgrade
                 </button>

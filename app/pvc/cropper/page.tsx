@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import { Upload, Crop, RotateCw } from "lucide-react";
+import PlanGate from "@/components/PlanGate";
 
 export default function PVCCropper() {
   const [image, setImage] = useState<string | null>(null);
@@ -83,6 +84,7 @@ export default function PVCCropper() {
   };
 
   return (
+    <PlanGate toolSlug="pvc-cropper">
     <main className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100">
       {/* Header Section */}
       <section className="bg-gradient-to-r from-amber-700 via-orange-600 to-rose-600 text-white">
@@ -266,7 +268,7 @@ export default function PVCCropper() {
               <ol className="space-y-2 text-sm text-amber-800 list-decimal list-inside">
                 <li>Upload your image</li>
                 <li>Adjust scale and rotation as needed</li>
-                <li>Click "Crop for PVC Card"</li>
+                <li>Click &quot;Crop for PVC Card&quot;</li>
                 <li>Download and use for printing</li>
               </ol>
             </div>
@@ -277,5 +279,6 @@ export default function PVCCropper() {
       {/* Hidden Canvas for Cropping */}
       <canvas ref={canvasRef} className="hidden" />
     </main>
+    </PlanGate>
   );
 }

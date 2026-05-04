@@ -1,64 +1,37 @@
-// API to fetch admin logs and analytics
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/firebaseAdmin";
+import { getLogs } from "@/lib/adminService";
+import { successResponse, errorResponse } from "@/lib/adminUtils";
 import { verifyAdminAuth } from "@/lib/adminAuth";
+import type { PaginationOptions, QueryFilters } from "@/types/admin";
 
-export async function GET(req: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
-    const auth = await verifyAdminAuth(req);
+    const auth = await verifyAdminAuth(request);
     if (!auth.isAdmin) {
-      return NextResponse.json(
-        { error: "Unauthorized - Admin access required" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: auth.error }, { status: 401 });
     }
 
-    const db = getDb();
-    const logsType = req.nextUrl.searchParams.get("type") || "all";
-    const days = parseInt(req.nextUrl.searchParams.get("days") || "7");
+    const searchParams = request.nextUrl.searchParams;
 
-    // Calculate date from X days ago
-    const dateFrom = new Date();
-    dateFrom.setDate(dateFrom.getDate() - days);
-
-    let query: FirebaseFirestore.Query = db.collection("adminLogs");
-
-    if (logsType !== "all") {
-      query = query.where("action", "==", logsType);
-    }
-
-    query = query.where("timestamp", ">=", dateFrom).orderBy("timestamp", "desc");
-
-    const snapshot = await query.limit(500).get();
-    const logs: Record<string, unknown>[] = [];
-
-    snapshot.forEach((doc) => {
-      logs.push({
-        id: doc.id,
-        ...doc.data(),
-        timestamp: doc.data().timestamp?.toDate?.()?.toISOString(),
-      });
-    });
-
-    // Calculate stats
-    const stats = {
-      totalActions: logs.length,
-      approvals: logs.filter((l) => l.action === "approve").length,
-      rejections: logs.filter((l) => l.action === "reject").length,
-      declines: logs.filter((l) => l.action === "decline").length,
-      replies: logs.filter((l) => l.action === "reply").length,
+    const filters: QueryFilters = {
+      resource: (searchParams.get("resource") || undefined) as QueryFilters["resource"],
     };
 
-    return NextResponse.json({
-      success: true,
-      stats,
-      logs,
-    });
+    const options: PaginationOptions = {
+      page: parseInt(searchParams.get("page") || "1"),
+      limit: parseInt(searchParams.get("limit") || "50"),
+      sortBy: searchParams.get("sortBy") || "timestamp",
+      sortOrder: (searchParams.get("sortOrder") || "desc") as "asc" | "desc",
+    };
+
+    const logs = await getLogs(filters, options);
+
+    const { response, status } = successResponse(logs, "Logs retrieved successfully");
+    return NextResponse.json(response, { status });
   } catch (error) {
-    console.error("Error fetching admin logs:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch admin logs", details: error instanceof Error ? error.message : "Unknown error" },
-      { status: 500 }
-    );
+    console.error("Logs GET error:", error);
+    const err = error instanceof Error ? error.message : "Failed to get logs";
+    const { response, status } = errorResponse(err, 500);
+    return NextResponse.json(response, { status });
   }
 }

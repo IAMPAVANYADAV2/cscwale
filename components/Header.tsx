@@ -4,10 +4,11 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Menu, X, LogOut, User } from "lucide-react";
 import { useAuth } from "@/app/contexts/AuthContext";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function Header() {
   const router = useRouter();
+  const pathname = usePathname();
   const { user, logout, loading } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -40,15 +41,13 @@ export default function Header() {
     { name: "Contact", href: "/#contact" },
   ];
 
-  const adminLink = [
-    { name: "Admin", href: "/admin/login" },
-  ];
-
   const handleLogout = async () => {
     await logout();
     setIsProfileOpen(false);
     router.push("/");
   };
+
+  if (pathname.startsWith("/admin")) return null;
 
   return (
     <header className={`sticky top-0 z-50 bg-white border-b border-slate-200 shadow-md transition-transform duration-300 transform ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}>

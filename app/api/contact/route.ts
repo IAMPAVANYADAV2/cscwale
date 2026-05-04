@@ -5,11 +5,15 @@ import { assertRateLimit } from "@/lib/rateLimit";
 import {
   requireBoundedText,
   requirePhoneNumber,
+  optionalBoundedText,
+  optionalEmail,
 } from "@/lib/validation";
 
 type ContactPayload = {
   name: string;
+  email?: string;
   phone: string;
+  subject?: string;
   message: string;
 };
 
@@ -19,15 +23,26 @@ export async function POST(request: Request) {
 
     const payload = (await request.json()) as ContactPayload;
     const name = requireBoundedText(payload?.name, "Name");
+    const email = optionalEmail(payload?.email) || "";
     const phone = requirePhoneNumber(payload?.phone);
+    const subject =
+      optionalBoundedText(payload?.subject, "Subject") || "Contact Form Submission";
     const message = requireBoundedText(payload?.message, "Message");
+    const timestamp = FieldValue.serverTimestamp();
 
     const contactRef = await getDb().collection("contacts").add({
       name,
+      email,
       phone,
+      subject,
       message,
-      status: "new",
-      createdAt: FieldValue.serverTimestamp(),
+      status: "unread",
+      adminNote: "",
+      isDeleted: false,
+      deletedAt: null,
+      deletedBy: null,
+      createdAt: timestamp,
+      updatedAt: timestamp,
     });
 
     return NextResponse.json({ success: true, contactId: contactRef.id });

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import type { StaticImageData } from "next/image";
 import {
   CheckCircle2,
   MonitorPlay,
@@ -27,7 +28,6 @@ import {
   Lock,
 } from "lucide-react";
 import sampleFront from "@/image/pvc_cropper_sample_image/sample.png";
-import sampleAlt from "@/image/pvc_cropper_sample_image/sanpme2.png";
 import sampleBatch from "@/image/pvc_cropper_sample_image/sample3.png";
 import proMain from "@/image/pro/Main.jpg";
 import proSetter from "@/image/pro/SetterLayout.jpg";
@@ -49,7 +49,7 @@ type Plan = {
   accentBg: string;
   border: string;
   audience: string;
-  screenshot: any;
+  screenshot: StaticImageData;
   highlights: { text: string; included: boolean }[];
   featured?: boolean;
   order: string;
@@ -63,7 +63,7 @@ const plans: Plan[] = [
     tagline: "Test the workflow before you invest",
     subtitle: "Real feel of the interface, crop quality, and processing — free evaluation.",
     price: "Free",
-    priceNote: "Limited to 20 files",
+    priceNote: "Limited evaluation access",
     cta: "Try Free",
     ctaIcon: <Download className="h-4 w-4" />,
     accent: "from-orange-500 to-amber-500",
@@ -74,7 +74,7 @@ const plans: Plan[] = [
     highlights: [
       { text: "Single-file processing", included: true },
       { text: "One PDF at a time", included: true },
-      { text: "20 files in trial lifecycle", included: true },
+      { text: "Limited trial lifecycle", included: true },
       { text: "Batch processing", included: false },
       { text: "Manual photo fix", included: false },
       { text: "Template Setter", included: false },
@@ -87,8 +87,8 @@ const plans: Plan[] = [
     title: "Lite",
     tagline: "Simple, fast, practical daily work",
     subtitle: "Built for speed on any PC — import, process, crop. No complexity.",
-    price: "₹999",
-    priceNote: "one-time payment",
+    price: "₹399",
+    priceNote: "lifetime license",
     cta: "Get Lite",
     ctaIcon: <Zap className="h-4 w-4" />,
     accent: "from-blue-500 to-cyan-500",
@@ -112,8 +112,8 @@ const plans: Plan[] = [
     title: "Pro",
     tagline: "Full professional workflow power",
     subtitle: "Complete business edition — batch, templates, password PDFs, everything.",
-    price: "₹1,999",
-    priceNote: "one-time payment",
+    price: "₹599",
+    priceNote: "lifetime license + 1 year updates",
     cta: "Start with Pro",
     ctaIcon: <Sparkles className="h-4 w-4" />,
     accent: "from-blue-600 to-blue-700",
@@ -128,6 +128,7 @@ const plans: Plan[] = [
       { text: "Manual photo fix", included: true },
       { text: "Integrated Template Setter", included: true },
       { text: "Password PDF handling", included: true },
+      { text: "1 year updates included", included: true },
     ],
     featured: true,
     order: "lg:order-2",
@@ -274,7 +275,7 @@ const faqs = [
   {
     question: "Trial, Lite, aur Pro mein kya difference hai?",
     answer:
-      "Trial evaluation ke liye hai (20 files limit). Lite simple daily work ke liye hai — fast UI, low system load. Pro full production edition hai — batch processing, template setter, password PDF support, sab kuch.",
+      "Trial evaluation ke liye hai. Lite ₹399 lifetime license simple daily work ke liye hai — fast UI, low system load. Pro ₹599 lifetime license hai, jisme full production workflow ke saath 1 year updates included hain.",
   },
   {
     question: "Kya yeh low-end PC pe chalega?",
@@ -284,7 +285,7 @@ const faqs = [
   {
     question: "Kya Trial version production ke liye enough hai?",
     answer:
-      "Nahi. Trial version sirf evaluation ke liye hai — 20 files ki limit hai. Daily work ke liye Lite ya Pro lena zaroori hai.",
+      "Nahi. Trial version sirf evaluation ke liye hai. Daily work ke liye Lite ya Pro lena zaroori hai.",
   },
   {
     question: "Password-protected PDFs support hain?",
@@ -294,7 +295,7 @@ const faqs = [
   {
     question: "Software kaise milega? Delivery kaise hogi?",
     answer:
-      "WhatsApp pe inquiry karein, humari team aapko pricing, setup instructions, aur software delivery ka poora process samjhayegi. Installation support bhi milta hai.",
+      "WhatsApp pe inquiry karein, humari team aapko pricing, setup instructions, aur software delivery ka poora process samjhayegi. Pro edition ke saath 1 year updates bhi milte hain.",
   },
   {
     question: "Lite ki jagah Pro kyun lein?",
@@ -329,7 +330,7 @@ export default function ToolsSalesPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<PlanId>("pro");
   const [selectedImage, setSelectedImage] = useState<{
-    src: any;
+    src: StaticImageData;
     alt: string;
   } | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);

@@ -14,6 +14,7 @@ const planCopy: Record<
     subtitle: string;
     accent: string;
     note: string;
+    price: string;
   }
 > = {
   trial: {
@@ -21,18 +22,21 @@ const planCopy: Record<
     subtitle: "Evaluation access for testing workflow",
     accent: "from-sky-600 to-cyan-600",
     note: "Best for testing the software before upgrade.",
+    price: "Free trial",
   },
   lite: {
     title: "Lite Edition",
     subtitle: "Simple and lightweight working edition",
     accent: "from-amber-500 to-orange-500",
-    note: "Best for low-end systems and basic workflow.",
+    note: "Best for low-end systems and basic workflow. Lifetime license.",
+    price: "₹399",
   },
   pro: {
     title: "Pro Edition",
     subtitle: "Full production workflow for serious users",
     accent: "from-emerald-600 to-teal-700",
-    note: "Best for business users and high-volume work.",
+    note: "Best for business users and high-volume work. Lifetime license with 1 year updates.",
+    price: "₹599",
   },
 };
 
@@ -140,6 +144,9 @@ export default function PVCBuyModal({
                 </p>
                 <p className="mt-2 text-lg font-black text-slate-900">
                   {selectedPlanCopy.title}
+                </p>
+                <p className="mt-1 text-2xl font-black text-emerald-700">
+                  {selectedPlanCopy.price}
                 </p>
                 <p className="mt-1 text-sm text-slate-600">
                   {selectedPlanCopy.note}

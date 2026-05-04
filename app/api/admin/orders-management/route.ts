@@ -1,178 +1,102 @@
-// API to manage all orders - view, approve, reject, decline
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/firebaseAdmin";
-import { Timestamp } from "firebase-admin/firestore";
+import { ordersService } from "@/lib/adminService";
+import { successResponse, errorResponse } from "@/lib/adminUtils";
 import { verifyAdminAuth } from "@/lib/adminAuth";
+import type { PaginationOptions, QueryFilters, UpdateOrderInput } from "@/types/admin";
 
-export async function GET(req: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
-    const auth = await verifyAdminAuth(req);
+    const auth = await verifyAdminAuth(request);
     if (!auth.isAdmin) {
-      return NextResponse.json(
-        { error: "Unauthorized - Admin access required" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: auth.error }, { status: 401 });
     }
 
-    const db = getDb();
-    const orderType = req.nextUrl.searchParams.get("type") || "all"; // pvc, cropper, custom, service
-    const status = req.nextUrl.searchParams.get("status") || "all";
+    const searchParams = request.nextUrl.searchParams;
 
-    let query: FirebaseFirestore.Query = db.collection("orders");
+    const rawStatus = searchParams.get("status");
+    const filters: QueryFilters = {
+      status: rawStatus && rawStatus !== "all" ? rawStatus : undefined,
+      userId: searchParams.get("userId") || undefined,
+      isDeleted: searchParams.get("includeDeleted") === "true",
+    };
 
-    if (orderType !== "all") {
-      query = query.where("orderType", "==", orderType);
-    }
+    const options: PaginationOptions = {
+      page: parseInt(searchParams.get("page") || "1"),
+      limit: parseInt(searchParams.get("limit") || "50"),
+      sortBy: searchParams.get("sortBy") || "createdAt",
+      sortOrder: (searchParams.get("sortOrder") || "desc") as "asc" | "desc",
+    };
 
-    if (status !== "all") {
-      query = query.where("status", "==", status);
-    }
+    const orders = await ordersService.list(filters, options);
 
-    query = query.orderBy("createdAt", "desc");
-
-    const snapshot = await query.limit(1000).get();
-    const orders: Record<string, unknown>[] = [];
-
-    snapshot.forEach((doc) => {
-      orders.push({
-        id: doc.id,
-        ...doc.data(),
-        createdAt: doc.data().createdAt?.toDate?.()?.toISOString(),
-        updatedAt: doc.data().updatedAt?.toDate?.()?.toISOString(),
-      });
-    });
-
-    return NextResponse.json({
-      success: true,
-      count: orders.length,
-      orders,
-    });
+    const { response, status } = successResponse(orders, "Orders retrieved successfully");
+    return NextResponse.json(response, { status });
   } catch (error) {
-    console.error("Error fetching orders:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch orders", details: error instanceof Error ? error.message : "Unknown error" },
-      { status: 500 }
-    );
+    console.error("Orders GET error:", error);
+    const err = error instanceof Error ? error.message : "Failed to get orders";
+    const { response, status } = errorResponse(err, 500);
+    return NextResponse.json(response, { status });
   }
 }
 
-export async function PUT(req: NextRequest) {
+export async function PUT(request: NextRequest) {
   try {
-    const auth = await verifyAdminAuth(req);
+    const auth = await verifyAdminAuth(request);
     if (!auth.isAdmin) {
-      return NextResponse.json(
-        { error: "Unauthorized - Admin access required" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: auth.error }, { status: 401 });
     }
 
-    const { orderId, action, notes } = await req.json();
-
-    if (!orderId || !action) {
-      return NextResponse.json(
-        { error: "Missing orderId or action" },
-        { status: 400 }
-      );
-    }
-
-    const actionToStatus: Record<string, string> = {
-      approve: "approved",
-      approved: "approved",
-      reject: "rejected",
-      rejected: "rejected",
-      decline: "declined",
-      declined: "declined",
-      pending: "pending",
-      processing: "processing",
-      completed: "completed",
-    };
-
-    const status = actionToStatus[action];
-    if (!status) {
-      return NextResponse.json(
-        { error: `Invalid action. Allowed: ${Object.keys(actionToStatus).join(", ")}` },
-        { status: 400 }
-      );
-    }
-
-    const db = getDb();
-    const orderRef = db.collection("orders").doc(orderId);
-
-    const updateData = {
-      status,
-      updatedAt: Timestamp.now(),
-      adminId: auth.email,
-      adminNotes: notes || "",
-    };
-
-    await orderRef.update(updateData);
-
-    // Log admin action
-    await db.collection("adminLogs").add({
-      adminId: auth.email,
-      orderId,
-      action,
-      notes,
-      timestamp: Timestamp.now(),
-      details: `Changed order ${orderId} status to ${status}`,
-    });
-
-    const updatedOrder = await orderRef.get();
-
-    return NextResponse.json({
-      success: true,
-      message: `Order ${status} successfully`,
-      order: {
-        id: updatedOrder.id,
-        ...updatedOrder.data(),
-      },
-    });
-  } catch (error) {
-    console.error("Error updating order:", error);
-    return NextResponse.json(
-      { error: "Failed to update order", details: error instanceof Error ? error.message : "Unknown error" },
-      { status: 500 }
-    );
-  }
-}
-
-export async function DELETE(req: NextRequest) {
-  try {
-    const auth = await verifyAdminAuth(req);
-    if (!auth.isAdmin) {
-      return NextResponse.json(
-        { error: "Unauthorized - Admin access required" },
-        { status: 401 }
-      );
-    }
-
-    const { orderId } = await req.json();
+    const body = await request.json();
+    const { orderId, ...data } = body;
 
     if (!orderId) {
-      return NextResponse.json({ error: "Missing orderId" }, { status: 400 });
+      const { response, status } = errorResponse("Order ID is required", 400);
+      return NextResponse.json(response, { status });
     }
 
-    const db = getDb();
-    await db.collection("orders").doc(orderId).delete();
+    const updateData: UpdateOrderInput = {
+      status: data.status,
+      paymentStatus: data.paymentStatus,
+      adminNotes: data.adminNotes,
+      amount: data.amount,
+    };
 
-    // Log deletion
-    await db.collection("adminLogs").add({
-      adminId: auth.email,
-      orderId,
-      action: "delete",
-      timestamp: Timestamp.now(),
-      details: `Deleted order ${orderId}`,
-    });
+    const order = await ordersService.update(orderId, updateData, auth.uid);
 
-    return NextResponse.json({
-      success: true,
-      message: "Order deleted successfully",
-    });
+    const { response, status } = successResponse(order, "Order updated successfully");
+    return NextResponse.json(response, { status });
   } catch (error) {
-    console.error("Error deleting order:", error);
-    return NextResponse.json(
-      { error: "Failed to delete order", details: error instanceof Error ? error.message : "Unknown error" },
-      { status: 500 }
-    );
+    console.error("Order PUT error:", error);
+    const err = error instanceof Error ? error.message : "Failed to update order";
+    const { response, status } = errorResponse(err, error instanceof Error && error.message.includes("not found") ? 404 : 500);
+    return NextResponse.json(response, { status });
   }
 }
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const auth = await verifyAdminAuth(request);
+    if (!auth.isAdmin) {
+      return NextResponse.json({ error: auth.error }, { status: 401 });
+    }
+
+    const body = await request.json();
+    const { orderId } = body;
+
+    if (!orderId) {
+      const { response, status } = errorResponse("Order ID is required", 400);
+      return NextResponse.json(response, { status });
+    }
+
+    const order = await ordersService.delete(orderId, auth.uid);
+
+    const { response, status } = successResponse(order, "Order deleted successfully");
+    return NextResponse.json(response, { status });
+  } catch (error) {
+    console.error("Order DELETE error:", error);
+    const err = error instanceof Error ? error.message : "Failed to delete order";
+    const { response, status } = errorResponse(err, error instanceof Error && error.message.includes("not found") ? 404 : 500);
+    return NextResponse.json(response, { status });
+  }
+}
+

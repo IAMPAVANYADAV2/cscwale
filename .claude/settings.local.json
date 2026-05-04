@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(npx next *)",
+      "Bash(curl -s http://127.0.0.1:3000/tools)",
+      "Bash(taskkill //F //IM node.exe)",
+      "Bash(grep -E \"^/c/Users/_/Desktop/CSC/cscwale/[^/]+$\")",
+      "Bash(grep \"\\\\.md\\\\|\\\\.txt\\\\|\\\\.mjs\\\\|\\\\.ts$\")",
+      "Bash(grep -E \"\\\\.md$|\\\\.ts$|\\\\.tsx$|proxy\")"
+    ]
+  }
+}

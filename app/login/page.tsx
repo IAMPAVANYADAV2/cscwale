@@ -58,7 +58,10 @@ export default function LoginPage() {
           role: "user",
           createdAt: Timestamp.now(),
           lastLogin: Timestamp.now(),
-          subscriptionTier: "free",
+          subscriptionTier: "trial",
+          planName: "Trial",
+          planAssignedAt: Timestamp.now(),
+          planExpiryDate: Timestamp.fromDate(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)),
           orders: [],
           customMessages: [],
           isActive: true,
@@ -132,7 +135,10 @@ export default function LoginPage() {
         role: "user",
         createdAt: Timestamp.now(),
         lastLogin: Timestamp.now(),
-        subscriptionTier: "free",
+        subscriptionTier: "trial",
+        planName: "Trial",
+        planAssignedAt: Timestamp.now(),
+        planExpiryDate: Timestamp.fromDate(new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)),
         orders: [],
         customMessages: [],
         isActive: true,
@@ -268,7 +274,7 @@ export default function LoginPage() {
 
                 {/* Features List */}
                 <div className="mt-6 space-y-3">
-                  <h3 className="font-semibold text-gray-800 mb-3">After Login, You'll Get:</h3>
+                  <h3 className="font-semibold text-gray-800 mb-3">After Login, You&apos;ll Get:</h3>
                   <div className="space-y-2 text-sm text-gray-700">
                     <div className="flex gap-2">
                       <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
@@ -399,7 +405,7 @@ export default function LoginPage() {
                 {/* Info Box */}
                 <div className="mt-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
                   <p className="text-sm text-amber-800">
-                    <strong>💡 Tip:</strong> Remember your password! You'll need it to log in next time.
+                    <strong>💡 Tip:</strong> Remember your password! You&apos;ll need it to log in next time.
                   </p>
                 </div>
               </>

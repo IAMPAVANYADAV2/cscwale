@@ -1,116 +1,101 @@
-// API to manage custom messages and service requests
 import { NextRequest, NextResponse } from "next/server";
-import { getDb } from "@/lib/firebaseAdmin";
-import { Timestamp } from "firebase-admin/firestore";
+import { messagesService } from "@/lib/adminService";
+import { successResponse, errorResponse } from "@/lib/adminUtils";
 import { verifyAdminAuth } from "@/lib/adminAuth";
+import type { PaginationOptions, QueryFilters, UpdateMessageInput } from "@/types/admin";
 
-export async function GET(req: NextRequest) {
+export async function GET(request: NextRequest) {
   try {
-    const auth = await verifyAdminAuth(req);
+    const auth = await verifyAdminAuth(request);
     if (!auth.isAdmin) {
-      return NextResponse.json(
-        { error: "Unauthorized - Admin access required" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: auth.error }, { status: 401 });
     }
 
-    const db = getDb();
-    const messageType = req.nextUrl.searchParams.get("type") || "all"; // contact, service-request, custom-message
+    const searchParams = request.nextUrl.searchParams;
 
-    let query: FirebaseFirestore.Query = db.collection("messages");
+    const rawStatus = searchParams.get("status");
+    const filters: QueryFilters = {
+      status: rawStatus && rawStatus !== "all" ? rawStatus : undefined,
+      isDeleted: searchParams.get("includeDeleted") === "true",
+    };
 
-    if (messageType !== "all") {
-      query = query.where("type", "==", messageType);
-    }
+    const options: PaginationOptions = {
+      page: parseInt(searchParams.get("page") || "1"),
+      limit: parseInt(searchParams.get("limit") || "50"),
+      sortBy: searchParams.get("sortBy") || "createdAt",
+      sortOrder: (searchParams.get("sortOrder") || "desc") as "asc" | "desc",
+    };
 
-    query = query.orderBy("createdAt", "desc");
+    const messages = await messagesService.list(filters, options);
 
-    const snapshot = await query.limit(500).get();
-    const messages: Record<string, unknown>[] = [];
-
-    snapshot.forEach((doc) => {
-      messages.push({
-        id: doc.id,
-        ...doc.data(),
-        createdAt: doc.data().createdAt?.toDate?.()?.toISOString(),
-      });
-    });
-
-    return NextResponse.json({
-      success: true,
-      count: messages.length,
-      messages,
-    });
+    const { response, status } = successResponse(messages, "Messages retrieved successfully");
+    return NextResponse.json(response, { status });
   } catch (error) {
-    console.error("Error fetching messages:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch messages", details: error instanceof Error ? error.message : "Unknown error" },
-      { status: 500 }
-    );
+    console.error("Messages GET error:", error);
+    const err = error instanceof Error ? error.message : "Failed to get messages";
+    const { response, status } = errorResponse(err, 500);
+    return NextResponse.json(response, { status });
   }
 }
 
-export async function PUT(req: NextRequest) {
+export async function PUT(request: NextRequest) {
   try {
-    const auth = await verifyAdminAuth(req);
+    const auth = await verifyAdminAuth(request);
     if (!auth.isAdmin) {
-      return NextResponse.json(
-        { error: "Unauthorized - Admin access required" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: auth.error }, { status: 401 });
     }
 
-    const { messageId, action, adminReply } = await req.json();
+    const body = await request.json();
+    const { messageId, action, ...data } = body;
 
-    if (!messageId || !action) {
-      return NextResponse.json(
-        { error: "Missing messageId or action" },
-        { status: 400 }
-      );
+    if (!messageId) {
+      const { response, status } = errorResponse("Message ID is required", 400);
+      return NextResponse.json(response, { status });
     }
 
-    const validActions = ["read", "reply", "archive", "spam", "follow-up"];
-    if (!validActions.includes(action)) {
-      return NextResponse.json(
-        { error: `Invalid action. Allowed: ${validActions.join(", ")}` },
-        { status: 400 }
-      );
-    }
-
-    const db = getDb();
-    const messageRef = db.collection("messages").doc(messageId);
-
-    const updateData: any = {
-      status: action,
-      updatedAt: Timestamp.now(),
-      adminId: auth.email,
+    const updateData: UpdateMessageInput = {
+      status:
+        data.status ||
+        (action === "read" || action === "unread" || action === "replied" ? action : undefined),
+      adminNote: data.adminNote,
+      adminReply: data.adminReply,
     };
 
-    if (adminReply) {
-      updateData.adminReply = adminReply;
-      updateData.repliedAt = Timestamp.now();
+    const message = await messagesService.update(messageId, updateData, auth.uid);
+
+    const { response, status } = successResponse(message, "Message updated successfully");
+    return NextResponse.json(response, { status });
+  } catch (error) {
+    console.error("Message PUT error:", error);
+    const err = error instanceof Error ? error.message : "Failed to update message";
+    const { response, status } = errorResponse(err, error instanceof Error && error.message.includes("not found") ? 404 : 500);
+    return NextResponse.json(response, { status });
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const auth = await verifyAdminAuth(request);
+    if (!auth.isAdmin) {
+      return NextResponse.json({ error: auth.error }, { status: 401 });
     }
 
-    await messageRef.update(updateData);
+    const body = await request.json();
+    const { messageId } = body;
 
-    // Log admin action
-    await db.collection("adminLogs").add({
-      adminId: auth.email,
-      messageId,
-      action,
-      timestamp: Timestamp.now(),
-      details: `Updated message ${messageId} - ${action}${adminReply ? " with reply" : ""}`,
-    });
+    if (!messageId) {
+      const { response, status } = errorResponse("Message ID is required", 400);
+      return NextResponse.json(response, { status });
+    }
 
-    return NextResponse.json({
-      success: true,
-      message: `Message ${action} successfully`,
-    });
+    const message = await messagesService.delete(messageId, auth.uid);
+
+    const { response, status } = successResponse(message, "Message deleted successfully");
+    return NextResponse.json(response, { status });
   } catch (error) {
-    console.error("Error updating message:", error);
-    return NextResponse.json(
-      { error: "Failed to update message", details: error instanceof Error ? error.message : "Unknown error" },
-      { status: 500 }
-    );
+    console.error("Message DELETE error:", error);
+    const err = error instanceof Error ? error.message : "Failed to delete message";
+    const { response, status } = errorResponse(err, error instanceof Error && error.message.includes("not found") ? 404 : 500);
+    return NextResponse.json(response, { status });
   }
 }

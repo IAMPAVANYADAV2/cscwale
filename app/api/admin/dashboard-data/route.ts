@@ -2,21 +2,31 @@
 // GET all orders, messages, and users for admin dashboard
 import { NextRequest, NextResponse } from "next/server";
 import { getDb } from "@/lib/firebaseAdmin";
+import { verifyAdminAuth } from "@/lib/adminAuth";
 
 export async function GET(request: NextRequest) {
   try {
-    // Check for admin token from headers
-    const token = request.headers.get("Authorization")?.replace("Bearer ", "");
-    
-    if (!token || !token.startsWith("admin_token_")) {
+    const auth = await verifyAdminAuth(request);
+    if (!auth.isAdmin) {
       return NextResponse.json(
-        { error: "Unauthorized - Admin access required" },
+        { error: auth.error || "Unauthorized - Admin access required" },
         { status: 401 }
       );
     }
 
     const db = getDb();
-    const data: any = {};
+    const data: {
+      orders: Record<string, unknown>[];
+      messages: Record<string, unknown>[];
+      contacts: Record<string, unknown>[];
+      leads: Record<string, unknown>[];
+      totalUsers?: number;
+    } = {
+      orders: [],
+      messages: [],
+      contacts: [],
+      leads: [],
+    };
 
     // Fetch orders
     try {
@@ -28,14 +38,19 @@ export async function GET(request: NextRequest) {
       data.orders = [];
       ordersSnapshot.forEach((doc) => {
         const orderData = doc.data();
+        if (orderData.isDeleted === true) return;
         data.orders.push({
           id: doc.id,
-          userId: orderData.userId || "",
+          orderId: orderData.orderId || doc.id,
+          userId: orderData.userId || orderData.phone || "",
+          userName: orderData.userName || orderData.name || "",
           userEmail: orderData.userEmail || "",
+          serviceId: orderData.serviceId || orderData.orderType || "service",
           orderType: orderData.orderType || "service",
-          serviceName: orderData.serviceName || "Unknown",
+          serviceName: orderData.serviceName || orderData.comboDetails || "Unknown",
           tier: orderData.tier || null,
-          status: orderData.status || "pending",
+          status: orderData.status === "approved" ? "completed" : orderData.status === "rejected" || orderData.status === "declined" ? "cancelled" : orderData.status || "pending",
+          paymentStatus: orderData.paymentStatus || "unpaid",
           amount: orderData.amount || 0,
           description: orderData.description || "",
           createdAt: orderData.createdAt?.toDate?.() || new Date(orderData.createdAt),
@@ -57,6 +72,7 @@ export async function GET(request: NextRequest) {
       
       data.messages = [];
       messagesSnapshot.forEach((doc) => {
+        if (doc.data().isDeleted === true) return;
         data.messages.push({
           id: doc.id,
           ...doc.data(),
@@ -78,6 +94,7 @@ export async function GET(request: NextRequest) {
       data.contacts = [];
       contactsSnapshot.forEach((doc) => {
         const contactData = doc.data();
+        if (contactData.isDeleted === true) return;
         data.contacts.push({
           id: doc.id,
           name: contactData.name || "Unknown",
@@ -86,13 +103,48 @@ export async function GET(request: NextRequest) {
           subject: contactData.subject || "Contact Form Submission",
           message: contactData.message || "",
           type: "contact-form",
-          status: contactData.status || "unread",
+          status: contactData.status === "read" || contactData.status === "replied" ? contactData.status : "unread",
+          adminNote: contactData.adminNote || "",
           createdAt: contactData.createdAt?.toDate?.() || new Date(contactData.createdAt),
+          updatedAt: contactData.updatedAt?.toDate?.() || contactData.updatedAt || null,
         });
       });
     } catch (contactsError) {
       console.error("Error fetching contacts:", contactsError);
       data.contacts = [];
+    }
+
+    // Fetch software leads (Trial/Lite/Pro inquiries)
+    try {
+      const leadsSnapshot = await db
+        .collection("leads")
+        .orderBy("createdAt", "desc")
+        .get();
+
+      data.leads = [];
+      leadsSnapshot.forEach((doc) => {
+        const leadData = doc.data();
+        if (leadData.isDeleted === true) return;
+        data.leads.push({
+          id: doc.id,
+          name: leadData.name || "Unknown",
+          email: leadData.email || "",
+          phone: leadData.phone || "",
+          subject: leadData.subject || `${leadData.product || "Software"} Inquiry`,
+          message: leadData.message || `${leadData.name || "Lead"} requested follow-up for ${leadData.product || leadData.plan || "software"}.`,
+          type: "contact-form",
+          status: leadData.status === "read" || leadData.status === "replied" ? leadData.status : "unread",
+          adminNote: leadData.adminNote || "",
+          plan: leadData.plan || "",
+          product: leadData.product || "",
+          address: leadData.address || "",
+          createdAt: leadData.createdAt?.toDate?.() || new Date(leadData.createdAt),
+          updatedAt: leadData.updatedAt?.toDate?.() || leadData.updatedAt || null,
+        });
+      });
+    } catch (leadsError) {
+      console.error("Error fetching leads:", leadsError);
+      data.leads = [];
     }
 
     // Fetch users

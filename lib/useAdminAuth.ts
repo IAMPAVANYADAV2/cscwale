@@ -2,86 +2,72 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "@/lib/firebaseConfig";
+import type { User } from "@/types/admin";
 
-interface AdminUser {
-  uid: string;
-  email: string;
-  displayName: string;
-  role: string;
-}
+export type AdminAuthStatus = "loading" | "unauthenticated" | "unauthorized" | "authenticated" | "error";
 
 export function useAdminAuth() {
   const router = useRouter();
-  const [admin, setAdmin] = useState<AdminUser | null>(null);
+  const [admin, setAdmin] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [status, setStatus] = useState<AdminAuthStatus>("loading");
 
   useEffect(() => {
-    const checkAdminSession = async () => {
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      setLoading(true);
+      setStatus("loading");
+      setError(null);
+
       try {
-        // Check if admin token exists in localStorage or sessionStorage
-        const token = localStorage.getItem("adminToken") || sessionStorage.getItem("adminToken");
-        
-        if (!token) {
-          setIsAuthenticated(false);
+        if (!firebaseUser) {
           setAdmin(null);
-          setLoading(false);
+          setIsAuthenticated(false);
+          setStatus("unauthenticated");
           return;
         }
 
-        // Try to get cached admin user
-        const cachedAdmin = localStorage.getItem("adminUser");
-        if (cachedAdmin) {
-          setAdmin(JSON.parse(cachedAdmin));
-          setIsAuthenticated(true);
-          setLoading(false);
-          return;
-        }
-
-        // Verify token with backend
+        const token = await firebaseUser.getIdToken();
         const response = await fetch("/api/auth/verify-admin", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ token }),
         });
 
-        if (!response.ok) {
-          // Token is invalid, clear storage
-          localStorage.removeItem("adminToken");
-          localStorage.removeItem("adminUser");
-          sessionStorage.removeItem("adminToken");
-          setIsAuthenticated(false);
+        const result = await response.json().catch(() => null);
+
+        if (!response.ok || !result?.admin) {
           setAdmin(null);
-          setLoading(false);
+          setIsAuthenticated(false);
+          setStatus("unauthorized");
+          setError(result?.error || "You do not have permission to access the admin area.");
           return;
         }
 
-        const data = await response.json();
-        if (data.admin) {
-          setAdmin(data.admin);
-          localStorage.setItem("adminUser", JSON.stringify(data.admin));
-          setIsAuthenticated(true);
-        }
+        setAdmin(result.admin as User);
+        setIsAuthenticated(true);
+        setStatus("authenticated");
+        setError(null);
       } catch (err) {
         const message = err instanceof Error ? err.message : "Failed to verify admin session";
         setError(message);
-        console.error("Admin auth error:", err);
+        setAdmin(null);
         setIsAuthenticated(false);
+        setStatus("error");
       } finally {
         setLoading(false);
       }
-    };
+    });
 
-    checkAdminSession();
+    return () => unsubscribe();
   }, []);
 
   const logout = async () => {
-    localStorage.removeItem("adminToken");
-    localStorage.removeItem("adminUser");
-    sessionStorage.removeItem("adminToken");
+    await signOut(auth);
     setAdmin(null);
     setIsAuthenticated(false);
     router.push("/admin/login");
@@ -92,6 +78,7 @@ export function useAdminAuth() {
     loading,
     isAuthenticated,
     error,
+    status,
     logout,
   };
 }

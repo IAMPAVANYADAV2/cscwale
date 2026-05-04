@@ -50,19 +50,33 @@ export async function POST(request: Request) {
       { min: 1, max: MAX_ORDER_QUANTITY }
     );
 
+    const timestamp = FieldValue.serverTimestamp();
     const orderRef = await getDb().collection("orders").add({
       name,
+      userName: name,
       phone,
       email: email || null,
+      userEmail: email || "",
+      userId: phone,
       address: address || null,
       comboDetails,
       quantity,
       deliveryType,
       notes: notes || null,
+      serviceId: "pvc-card",
+      serviceName: comboDetails,
+      orderType: "pvc",
+      amount: 0,
       status: "pending",
       paymentStatus: "unpaid",
-      createdAt: FieldValue.serverTimestamp(),
+      isDeleted: false,
+      deletedAt: null,
+      deletedBy: null,
+      createdAt: timestamp,
+      updatedAt: timestamp,
     });
+
+    await orderRef.update({ orderId: orderRef.id });
 
     return NextResponse.json({ orderId: orderRef.id });
   } catch (error) {

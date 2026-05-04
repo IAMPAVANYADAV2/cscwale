@@ -9,7 +9,9 @@ const PHONE_LENGTH = 10;
 export default function ContactForm() {
   const [formData, setFormData] = useState({
     name: "",
+    email: "",
     phone: "",
+    subject: "",
     message: "",
   });
   const [loading, setLoading] = useState(false);
@@ -35,7 +37,7 @@ export default function ContactForm() {
       }
 
       setSuccess(true);
-      setFormData({ name: "", phone: "", message: "" });
+      setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
       
       // Reset success state after 5 seconds
       setTimeout(() => setSuccess(false), 5000);
@@ -74,6 +76,14 @@ export default function ContactForm() {
         className="rounded-xl border border-indigo-200 bg-white/60 px-4 py-2.5 text-sm text-indigo-900 placeholder:text-indigo-400 outline-none focus:border-indigo-400 focus:bg-white transition-all shadow-sm"
       />
       <input
+        type="email"
+        placeholder="Email (optional)"
+        maxLength={MAX_TEXT_LENGTH}
+        value={formData.email}
+        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+        className="rounded-xl border border-indigo-200 bg-white/60 px-4 py-2.5 text-sm text-indigo-900 placeholder:text-indigo-400 outline-none focus:border-indigo-400 focus:bg-white transition-all shadow-sm"
+      />
+      <input
         type="tel"
         placeholder="Mobile Number"
         required
@@ -92,6 +102,14 @@ export default function ContactForm() {
       <p className="-mt-1 text-[11px] text-indigo-500">
         Mobile number 10 digits hi rakhein.
       </p>
+      <input
+        type="text"
+        placeholder="Subject (optional)"
+        maxLength={MAX_TEXT_LENGTH}
+        value={formData.subject}
+        onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+        className="rounded-xl border border-indigo-200 bg-white/60 px-4 py-2.5 text-sm text-indigo-900 placeholder:text-indigo-400 outline-none focus:border-indigo-400 focus:bg-white transition-all shadow-sm"
+      />
       <textarea
         placeholder="Requirements likhein..."
         required
